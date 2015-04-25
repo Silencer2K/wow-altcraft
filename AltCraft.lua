@@ -86,6 +86,8 @@ function addon:OnInitialize()
     GameTooltip:HookScript('OnTooltipSetItem', function(self)
         addon:OnGameTooltipSetItem(self)
     end)
+
+    AltCraftFrame:OnInitialize()
 end
 
 function addon:OnLogin()

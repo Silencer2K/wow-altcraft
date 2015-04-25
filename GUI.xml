@@ -15,7 +15,7 @@
                 </Texture>
             </Layer>
             <Layer level="ARTWORK">
-                <Texture name="$parentTopLeft" file="Interface\Addons\AltCraft\assets\frame\tl2">
+                <Texture name="$parentTopLeft" file="Interface\Addons\AltCraft\assets\frame\tl">
                     <Size x="256" y="256" />
                     <Anchors>
                         <Anchor point="TOPLEFT" />
@@ -33,7 +33,7 @@
                         <Anchor point="TOPLEFT" relativeTo="$parentTop" relativePoint="TOPRIGHT" x="0" y="0" />
                     </Anchors>
                 </Texture>
-                <Texture name="$parentBotLeft" file="Interface\Addons\AltCraft\assets\frame\bl2">
+                <Texture name="$parentBotLeft" file="Interface\Addons\AltCraft\assets\frame\bl">
                     <Size x="256" y="256" />
                     <Anchors>
                         <Anchor point="TOPLEFT" x="0" y="-256" />
@@ -59,6 +59,24 @@
                     <Anchor point="TOPRIGHT">
                         <Offset>
                             <AbsDimension x="3" y="-8" />
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </Button>
+            <Button name="$parentTab1" inherits="CharacterFrameTabButtonTemplate" id="1" parentKey="TabChars">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativePoint="BOTTOMLEFT">
+                        <Offset>
+                            <AbsDimension x="27" y="13" />
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </Button>
+            <Button name="$parentTab2" inherits="CharacterFrameTabButtonTemplate" id="2" parentKey="TabReagents">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentTab1" relativePoint="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="-15" y="0" />
                         </Offset>
                     </Anchor>
                 </Anchors>
