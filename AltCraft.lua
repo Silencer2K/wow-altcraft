@@ -29,7 +29,11 @@ function addon:OnInitialize()
         OnTooltipShow = function(tooltip)
         end,
         OnClick = function()
-            AltCraftFrame:Show()
+            if AltCraftFrame:IsShown() then
+                AltCraftFrame:Hide()
+            else
+                AltCraftFrame:Show()
+            end
         end,
     })
 
