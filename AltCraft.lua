@@ -188,47 +188,61 @@ function addon:OnGameTooltipCleared(tooltip)
 end
 
 function addon:OnGameTooltipSetItem(tooltip)
-    local _, link = tooltip:GetItem()
+    local disabled = _G['Altoholic'] or false
 
-    if link then
-        local itemId = link:match('|Hitem:(%d+):')
+    if not disabled then
+        local _, link = tooltip:GetItem()
 
-        if itemId then
-            itemId = 0 + itemId
+        if link then
+            local itemId = link:match('|Hitem:(%d+):')
 
-            tooltip:AddLine(' ')
+            if itemId then
+                itemId = 0 + itemId
 
-            local char, charDb
-            for char, charDb in pairs(self.realmDb.chars) do
-                local count, desc = 0
+                tooltip:AddLine(' ')
 
-                local source, sourceDb
-                for source, sourceDb in pairs({ equip = charDb.equip, bags = charDb.bags, reagents = charDb.reagents, bank = charDb.bank }) do
-                    if sourceDb[itemId] then
-                        count = count + sourceDb[itemId].count
-                        desc = (desc and (desc .. ', ') or '') .. string.format(
-                            '|c%s%s:|r |c%s%d|r',
-                            COLOR_TOOLTIP_SOURCE,
-                            L['in_' .. source],
+                local total = 0
+
+                local char, charDb
+                for char, charDb in pairs(self.realmDb.chars) do
+                    local count, desc = 0
+
+                    local source, sourceDb
+                    for source, sourceDb in pairs({ equip = charDb.equip, bags = charDb.bags, reagents = charDb.reagents, bank = charDb.bank }) do
+                        if sourceDb[itemId] then
+                            count = count + sourceDb[itemId].count
+                            desc = (desc and (desc .. ', ') or '') .. string.format(
+                                '|c%s%s:|r |c%s%d|r',
+                                COLOR_TOOLTIP_SOURCE,
+                                L['tooltip_' .. source],
+                                COLOR_TOOLTIP_COUNT,
+                                sourceDb[itemId].count
+                            )
+                        end
+                    end
+
+                    if count > 0 then
+                        tooltip:AddDoubleLine(string.format(
+                            '|c%s%s|r',
+                            RAID_CLASS_COLORS[charDb.class].colorStr,
+                            char
+                        ), string.format(
+                            '|c%s%d|r (%s)',
                             COLOR_TOOLTIP_COUNT,
-                            sourceDb[itemId].count
-                        )
+                            count,
+                            desc
+                        ), unpack(COLOR_TOOLTIP_2L))
                     end
                 end
 
-                if count > 0 then
-                    tooltip:AddDoubleLine(string.format(
-                        '|c%s%s|r',
-                        RAID_CLASS_COLORS[charDb.class].colorStr,
-                        char
-                    ), string.format(
-                        '|c%s%d|r (%s)',
-                        COLOR_TOOLTIP_COUNT,
-                        count,
-                        desc
-                    ),
-                    unpack(COLOR_TOOLTIP_2L))
-                end
+                tooltip:AddDoubleLine(string.format(
+                    '%s:',
+                    L.tooltip_total
+                ), string.format(
+                    '|c%s%d|r',
+                    COLOR_TOOLTIP_COUNT,
+                    total
+                ), unpack(COLOR_TOOLTIP_2L))
             end
         end
     end

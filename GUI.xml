@@ -7,7 +7,7 @@
         </Anchors>
         <Layers>
             <Layer level="BACKGROUND">
-                <Texture name="AltCraftPortraitTexture">
+                <Texture name="$parentPortraitTexture">
                     <Size x="58" y="58" />
                     <Anchors>
                         <Anchor point="TOPLEFT" x="8" y="-7" />
@@ -58,7 +58,7 @@
                 <Anchors>
                     <Anchor point="TOPRIGHT">
                         <Offset>
-                            <AbsDimension x="3" y="-8"/>
+                            <AbsDimension x="3" y="-8" />
                         </Offset>
                     </Anchor>
                 </Anchors>
