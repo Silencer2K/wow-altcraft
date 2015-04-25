@@ -4,6 +4,7 @@ LibStub('AceAddon-3.0'):NewAddon(addon, addonName, 'AceEvent-3.0')
 
 local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
 
+local COLOR_TOOLTIP         = { 1.0, 1.0, 1.0 }
 local COLOR_TOOLTIP_2L      = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 }
 
 local COLOR_TOOLTIP_SOURCE  = 'ffffffff'
@@ -233,16 +234,16 @@ function addon:OnGameTooltipSetItem(tooltip)
                             desc
                         ), unpack(COLOR_TOOLTIP_2L))
                     end
+
+                    total = total + count
                 end
 
-                tooltip:AddDoubleLine(string.format(
-                    '%s:',
-                    L.tooltip_total
-                ), string.format(
-                    '|c%s%d|r',
+                tooltip:AddLine(string.format(
+                    '%s: |c%s%d|r',
+                    L.tooltip_total,
                     COLOR_TOOLTIP_COUNT,
                     total
-                ), unpack(COLOR_TOOLTIP_2L))
+                ), unpack(COLOR_TOOLTIP))
             end
         end
     end
