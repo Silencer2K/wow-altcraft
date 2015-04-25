@@ -15,37 +15,37 @@
                 </Texture>
             </Layer>
             <Layer level="ARTWORK">
-                <Texture name="$parentTopLeft" file="Interface\AUCTIONFRAME\UI-AUCTIONFRAME-BID-TOPLEFT">
+                <Texture name="$parentTopLeft" file="Interface\Addons\AltCraft\assets\frame\tl2">
                     <Size x="256" y="256" />
                     <Anchors>
                         <Anchor point="TOPLEFT" />
                     </Anchors>
                 </Texture>
-                <Texture name="$parentTop" file="Interface\AUCTIONFRAME\UI-AUCTIONFRAME-AUCTION-TOP">
+                <Texture name="$parentTop" file="Interface\Addons\AltCraft\assets\frame\t">
                     <Size x="256" y="256" />
                     <Anchors>
                         <Anchor point="TOPLEFT" relativeTo="$parentTopLeft" relativePoint="TOPRIGHT" x="0" y="0" />
                     </Anchors>
                 </Texture>
-                <Texture name="$parentTopRight" file="Interface\AUCTIONFRAME\UI-AUCTIONFRAME-AUCTION-TOPRIGHT">
+                <Texture name="$parentTopRight" file="Interface\Addons\AltCraft\assets\frame\tr">
                     <Size x="256" y="256" />
                     <Anchors>
                         <Anchor point="TOPLEFT" relativeTo="$parentTop" relativePoint="TOPRIGHT" x="0" y="0" />
                     </Anchors>
                 </Texture>
-                <Texture name="$parentBotLeft" file="Interface\AUCTIONFRAME\UI-AUCTIONFRAME-BID-BOTLEFT">
+                <Texture name="$parentBotLeft" file="Interface\Addons\AltCraft\assets\frame\bl2">
                     <Size x="256" y="256" />
                     <Anchors>
                         <Anchor point="TOPLEFT" x="0" y="-256" />
                     </Anchors>
                 </Texture>
-                <Texture name="$parentBot" file="Interface\AUCTIONFRAME\UI-AUCTIONFRAME-AUCTION-BOT">
+                <Texture name="$parentBot" file="Interface\Addons\AltCraft\assets\frame\b">
                     <Size x="256" y="256" />
                     <Anchors>
                         <Anchor point="TOPLEFT" relativeTo="$parentBotLeft" relativePoint="TOPRIGHT" x="0" y="0" />
                     </Anchors>
                 </Texture>
-                <Texture name="$parentBotRight" file="Interface\AUCTIONFRAME\UI-AUCTIONFRAME-BID-BOTRIGHT">
+                <Texture name="$parentBotRight" file="Interface\Addons\AltCraft\assets\frame\br">
                     <Size x="256" y="256" />
                     <Anchors>
                         <Anchor point="TOPLEFT" relativeTo="$parentBot" relativePoint="TOPRIGHT" x="0" y="0" />
@@ -54,6 +54,15 @@
             </Layer>
         </Layers>
         <Frames>
+            <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+                <Anchors>
+                    <Anchor point="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="3" y="-8"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </Button>
         </Frames>
     </Frame>
 </Ui>
