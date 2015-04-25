@@ -1,0 +1,25 @@
+## Interface: 60100
+## Title: AltCraft
+## Author: silencer2k@gmail.com
+## SavedVariables: AltCraftDB
+## Version: 0.1
+
+AltCraft.xml
+
+locales\enUS.lua
+locales\ruRU.lua
+
+locales\deDE.lua
+locales\esES.lua
+locales\esMX.lua
+locales\frFR.lua
+locales\itIT.lua
+locales\koKR.lua
+locales\ptBR.lua
+locales\zhCN.lua
+locales\zhTW.lua
+
+AltCraft.lua
+
+GUI.xml
+GUI.lua
