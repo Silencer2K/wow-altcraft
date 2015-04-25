@@ -4,7 +4,7 @@ LibStub('AceAddon-3.0'):NewAddon(addon, addonName, 'AceEvent-3.0')
 
 local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
 
-local COLOR_TOOLTIP_TWO_LINE    = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 }
+local COLOR_TOOLTIP_2L      = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 }
 
 local COLOR_TOOLTIP_SOURCE  = 'ffffffff'
 local COLOR_TOOLTIP_COUNT   = 'ffffff00'
@@ -92,7 +92,7 @@ function addon:OnLogin()
         self.realmDb = {
             chars = {},
         }
-        self.db.global.realms[self.realm] = self.realmDb
+        self.db.global[self.faction][self.realm] = self.realmDb
     end
 
     local _, class = UnitClass('player')
@@ -223,7 +223,7 @@ function addon:OnGameTooltipSetItem(tooltip)
                         count,
                         desc
                     ),
-                    unpack(COLOR_TOOLTIP_TWO_LINE))
+                    unpack(COLOR_TOOLTIP_2L))
                 end
             end
         end

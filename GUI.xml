@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+    <Frame name="AltCraftFrame" toplevel="true" parent="UIParent" enableMouse="true" hidden="true">
+        <Size x="768" y="447" />
+        <Anchors>
+            <Anchor point="TOPLEFT" x="0" y="-104" />
+        </Anchors>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture name="AltCraftPortraitTexture">
+                    <Size x="58" y="58" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="8" y="-7" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="ARTWORK">
+                <Texture name="$parentTopLeft" file="Interface\AUCTIONFRAME\UI-AUCTIONFRAME-BID-TOPLEFT">
+                    <Size x="256" y="256" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT" />
+                    </Anchors>
+                </Texture>
+                <Texture name="$parentTop" file="Interface\AUCTIONFRAME\UI-AUCTIONFRAME-AUCTION-TOP">
+                    <Size x="256" y="256" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeTo="$parentTopLeft" relativePoint="TOPRIGHT" x="0" y="0" />
+                    </Anchors>
+                </Texture>
+                <Texture name="$parentTopRight" file="Interface\AUCTIONFRAME\UI-AUCTIONFRAME-AUCTION-TOPRIGHT">
+                    <Size x="256" y="256" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeTo="$parentTop" relativePoint="TOPRIGHT" x="0" y="0" />
+                    </Anchors>
+                </Texture>
+                <Texture name="$parentBotLeft" file="Interface\AUCTIONFRAME\UI-AUCTIONFRAME-BID-BOTLEFT">
+                    <Size x="256" y="256" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT" x="0" y="-256" />
+                    </Anchors>
+                </Texture>
+                <Texture name="$parentBot" file="Interface\AUCTIONFRAME\UI-AUCTIONFRAME-AUCTION-BOT">
+                    <Size x="256" y="256" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeTo="$parentBotLeft" relativePoint="TOPRIGHT" x="0" y="0" />
+                    </Anchors>
+                </Texture>
+                <Texture name="$parentBotRight" file="Interface\AUCTIONFRAME\UI-AUCTIONFRAME-BID-BOTRIGHT">
+                    <Size x="256" y="256" />
+                    <Anchors>
+                        <Anchor point="TOPLEFT" relativeTo="$parentBot" relativePoint="TOPRIGHT" x="0" y="0" />
+                    </Anchors>
+                </Texture>
+            </Layer>
+        </Layers>
+        <Frames>
+        </Frames>
+    </Frame>
+</Ui>
