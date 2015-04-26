@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
-    <Frame name="AltCraftFrame" toplevel="true" parent="UIParent" enableMouse="true" hidden="true">
+    <Frame name="AltCraftFrame" toplevel="true" parent="UIParent" movable="true" enableMouse="true" hidden="true">
         <Size x="768" y="447" />
         <Anchors>
             <Anchor point="TOPLEFT" x="0" y="-104" />
