@@ -1,6 +1,6 @@
 local addonName, addon = ...
 
-LibStub('AceAddon-3.0'):NewAddon(addon, addonName, 'AceEvent-3.0')
+LibStub('AceAddon-3.0'):NewAddon(addon, addonName, 'AceEvent-3.0', 'AceTimer-3.0')
 
 local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
 
@@ -58,26 +58,32 @@ function addon:OnInitialize()
         self:ScanBank()
     end)
 
+    self:RegisterEvent('BANKFRAME_CLOSED', function(...)
+        if self.scanBankTimer then
+            self:ScanBank()
+        end
+    end)
+
     self:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', function(...)
-        self:ScanEquip()
+        self:ScanEquip(true)
     end)
 
     self:RegisterEvent('BAG_UPDATE', function(event, bagIndex, ...)
         if self.charDb then
             if bagIndex >= BACKPACK_CONTAINER and bagIndex <= NUM_BAG_SLOTS then
-                self:ScanBags()
+                self:ScanBags(true)
             elseif bagIndex == NUM_BAG_SLOTS + 1 and bagIndex <= NUM_BAG_SLOTS + NUM_BANKBAGSLOTS then
-                self:ScanBank()
+                self:ScanBank(true)
             end
         end
     end)
 
     self:RegisterEvent('PLAYERREAGENTBANKSLOTS_CHANGED', function(...)
-        self:ScanReagents()
+        self:ScanReagents(true)
     end)
 
     self:RegisterEvent('PLAYERBANKSLOTS_CHANGED', function(...)
-        self:ScanBank()
+        self:ScanBank(true)
     end)
 
     GameTooltip:HookScript('OnTooltipCleared', function(self)
@@ -126,7 +132,19 @@ function addon:OnLogin()
     self:ScanReagents()
 end
 
-function addon:ScanEquip()
+function addon:ScanEquip(deffered)
+    if self.scanEquipTimer then
+        self:CancelTimer(self.scanEquipTimer)
+        self.scanEquipTimer = nil
+    end
+
+    if deffered then
+        self.scanEquipTimer = self:ScheduleTimer(function()
+            self:ScanEquip()
+        end, 0.2)
+        return
+    end
+
     items = {}
     local slotIndex
 
@@ -173,15 +191,51 @@ function addon:ScanContainers(fromIndex, toIndex, items)
     return items
 end
 
-function addon:ScanBags()
+function addon:ScanBags(deffered)
+    if self.scanBagsTimer then
+        self:CancelTimer(self.scanBagsTimer)
+        self.scanBagsTimer = nil
+    end
+
+    if deffered then
+        self.scanBagsTimer = self:ScheduleTimer(function()
+            self:ScanBags()
+        end, 0.2)
+        return
+    end
+
     self.charDb.bags = self:ScanContainers(BACKPACK_CONTAINER, NUM_BAG_SLOTS)
 end
 
-function addon:ScanReagents()
+function addon:ScanReagents(deffered)
+    if self.scanReagentsTimer then
+        self:CancelTimer(self.scanReagentsTimer)
+        self.scanReagentsTimer = nil
+    end
+
+    if deffered then
+        self.scanReagentsTimer = self:ScheduleTimer(function()
+            self:ScanReagents()
+        end, 0.2)
+        return
+    end
+
     self.charDb.reagents = self:ScanContainers(REAGENTBANK_CONTAINER, REAGENTBANK_CONTAINER)
 end
 
-function addon:ScanBank()
+function addon:ScanBank(deffered)
+    if self.scanBankTimer then
+        self:CancelTimer(self.scanBankTimer)
+        self.scanBankTimer = nil
+    end
+
+    if deffered then
+        self.scanBankTimer = self:ScheduleTimer(function()
+            self:ScanBank()
+        end, 0.2)
+        return
+    end
+
     self.charDb.bank = self:ScanContainers(NUM_BAG_SLOTS + 1, NUM_BAG_SLOTS + NUM_BANKBAGSLOTS,
         self:ScanContainers(BANK_CONTAINER, BANK_CONTAINER)
     )
