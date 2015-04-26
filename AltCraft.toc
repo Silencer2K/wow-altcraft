@@ -23,3 +23,5 @@ AltCraft.lua
 
 GUI.xml
 GUI.lua
+
+Config.lua

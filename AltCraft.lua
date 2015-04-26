@@ -6,6 +6,7 @@ local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
 
 local COLOR_TOOLTIP         = { 1.0, 1.0, 1.0 }
 local COLOR_TOOLTIP_2L      = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 }
+local COLOR_ICON_TOOLTIP    = { 0.8, 0.8, 0.8 }
 
 local COLOR_TOOLTIP_SOURCE  = 'ffffffff'
 local COLOR_TOOLTIP_COUNT   = 'ffffff00'
@@ -28,13 +29,19 @@ function addon:OnInitialize()
         icon = 'Interface\\ICONS\\INV_Misc_Gem_Crystal_01',
         label = "AltCraft",
         OnTooltipShow = function(tooltip)
+            tooltip:AddLine(addonName)
+            tooltip:AddLine(L.icon_tooltip, unpack(COLOR_ICON_TOOLTIP))
         end,
-        OnClick = function()
-            if AltCraftFrame:IsShown() then
-                AltCraftFrame:Hide()
+        OnClick = function(obj, button)
+            if button == 'RightButton' then
+                InterfaceOptionsFrame_OpenToCategory(addonName)
             else
-                AltCraftFrame:Show()
-                AltCraftFrame:OnSelectTab(1)
+                if AltCraftFrame:IsShown() then
+                    AltCraftFrame:Hide()
+                else
+                    AltCraftFrame:Show()
+                    AltCraftFrame:OnSelectTab(1)
+                end
             end
         end,
     })
@@ -95,6 +102,9 @@ function addon:OnInitialize()
     end)
 
     AltCraftFrame:OnInitialize()
+
+    LibStub('AceConfig-3.0'):RegisterOptionsTable(addonName, self:GetOptions())
+    LibStub('AceConfigDialog-3.0'):AddToBlizOptions(addonName, addonName, nil)
 end
 
 function addon:OnLogin()
