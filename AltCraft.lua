@@ -79,7 +79,7 @@ function addon:OnInitialize()
         if self.charDb then
             if bagIndex >= BACKPACK_CONTAINER and bagIndex <= NUM_BAG_SLOTS then
                 self:ScanBags(true)
-            elseif bagIndex == NUM_BAG_SLOTS + 1 and bagIndex <= NUM_BAG_SLOTS + NUM_BANKBAGSLOTS then
+            elseif bagIndex >= NUM_BAG_SLOTS + 1 and bagIndex <= NUM_BAG_SLOTS + NUM_BANKBAGSLOTS then
                 self:ScanBank(true)
             end
         end
