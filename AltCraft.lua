@@ -54,7 +54,7 @@ function addon:OnInitialize()
     end)
 
     self:RegisterEvent('PLAYER_LEVEL_UP', function(event, level, ...)
-        selc.charDb.level = 0 + level
+        self.charDb.level = 0 + level
     end)
 
     self:RegisterEvent('PLAYER_MONEY', function(...)
