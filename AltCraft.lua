@@ -26,7 +26,7 @@ function addon:OnInitialize()
 
     self.ldb = LibStub('LibDataBroker-1.1'):NewDataObject(addonName, {
         type = 'launcher',
-        icon = 'Interface\\ICONS\\INV_Misc_Gem_Crystal_01',
+        icon = 'Interface\\ICONS\\INV_Gizmo_KhoriumPowerCore',
         label = "AltCraft",
         OnTooltipShow = function(tooltip)
             tooltip:AddLine(addonName)
