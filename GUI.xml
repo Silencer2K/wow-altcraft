@@ -7,7 +7,7 @@
         </Anchors>
         <Layers>
             <Layer level="BACKGROUND">
-                <Texture name="$parentPortraitTexture">
+                <Texture name="$parentPortraitTexture" parentKey="Portrait">
                     <Size x="58" y="58" />
                     <Anchors>
                         <Anchor point="TOPLEFT" x="8" y="-7" />
@@ -15,7 +15,7 @@
                 </Texture>
             </Layer>
             <Layer level="ARTWORK">
-                <Texture name="$parentTopLeft" file="Interface\Addons\AltCraft\assets\frame\tl">
+                <Texture name="$parentTopLeft" file="Interface\Addons\AltCraft\assets\frame\tl" parentKey="TopLeft">
                     <Size x="256" y="256" />
                     <Anchors>
                         <Anchor point="TOPLEFT" />
@@ -33,7 +33,7 @@
                         <Anchor point="TOPLEFT" relativeTo="$parentTop" relativePoint="TOPRIGHT" x="0" y="0" />
                     </Anchors>
                 </Texture>
-                <Texture name="$parentBotLeft" file="Interface\Addons\AltCraft\assets\frame\bl">
+                <Texture name="$parentBotLeft" file="Interface\Addons\AltCraft\assets\frame\bl" parentKey="BottomLeft">
                     <Size x="256" y="256" />
                     <Anchors>
                         <Anchor point="TOPLEFT" x="0" y="-256" />
@@ -71,6 +71,11 @@
                         </Offset>
                     </Anchor>
                 </Anchors>
+                <Scripts>
+                    <OnClick><![CDATA[
+                        self:GetParent():OnSelectTab(1)
+                    ]]></OnClick>
+                </Scripts>
             </Button>
             <Button name="$parentTab2" inherits="CharacterFrameTabButtonTemplate" id="2" parentKey="TabReagents">
                 <Anchors>
@@ -80,6 +85,11 @@
                         </Offset>
                     </Anchor>
                 </Anchors>
+                <Scripts>
+                    <OnClick><![CDATA[
+                        self:GetParent():OnSelectTab(2)
+                    ]]></OnClick>
+                </Scripts>
             </Button>
         </Frames>
     </Frame>

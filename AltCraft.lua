@@ -34,6 +34,7 @@ function addon:OnInitialize()
                 AltCraftFrame:Hide()
             else
                 AltCraftFrame:Show()
+                AltCraftFrame:OnSelectTab(1)
             end
         end,
     })
@@ -108,8 +109,7 @@ function addon:OnLogin()
     if not self.charDb then
         self.charDb = {
             class = class,
-            level = 0,
-            money = 0,
+
             equip = {},
             bags = {},
             reagents = {},
