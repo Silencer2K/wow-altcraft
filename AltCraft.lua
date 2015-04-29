@@ -12,17 +12,7 @@ local COLOR_TOOLTIP_SOURCE  = 'ffffffff'
 local COLOR_TOOLTIP_COUNT   = 'ffffff00'
 
 function addon:OnInitialize()
-    self.db = LibStub('AceDB-3.0'):New(addonName .. 'DB', {
-        profile = {
-            minimap = {
-                hide = false,
-            },
-        },
-        global = {
-            alliance = {},
-            horde = {},
-        },
-    }, true)
+    self.db = LibStub('AceDB-3.0'):New(addonName .. 'DB', self:GetDefaults(), true)
 
     self.ldb = LibStub('LibDataBroker-1.1'):NewDataObject(addonName, {
         type = 'launcher',
@@ -255,7 +245,7 @@ function addon:OnGameTooltipCleared(tooltip)
 end
 
 function addon:OnGameTooltipSetItem(tooltip)
-    local disabled = _G['Altoholic'] or false
+    local disabled = false;--_G['Altoholic'] or false
 
     if not disabled then
         local _, link = tooltip:GetItem()
