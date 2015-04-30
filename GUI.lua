@@ -12,6 +12,13 @@ function frame:OnInitialize()
     self.Tab1:SetText(L.tab_chars)
     self.Tab1Frame.Title:SetText(L.tab_chars_title)
 
+    self.Tab1Frame.CharNameSort:SetText(L.sort_char_name)
+    self.Tab1Frame.CharLevelSort:SetText(L.sort_char_level)
+    self.Tab1Frame.CharILevelSort:SetText(L.sort_char_ilevel)
+    self.Tab1Frame.CharMoneySort:SetText(L.sort_char_money)
+    self.Tab1Frame.CharProf1Sort:SetText(L.sort_char_prof)
+    self.Tab1Frame.CharProf2Sort:SetText(L.sort_char_prof)
+
     self.Tab2:SetText(L.tab_reagents)
     self.Tab2Frame.Title:SetText(L.tab_reagents_title)
 

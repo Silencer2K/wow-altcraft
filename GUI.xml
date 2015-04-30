@@ -74,7 +74,6 @@
             </Anchors>
         </HighlightTexture>
     </Button>
-
     <Frame name="AltCraftFrame" toplevel="true" parent="UIParent" movable="true" enableMouse="true" hidden="true">
         <Size x="768" y="447" />
         <Anchors>
@@ -166,7 +165,6 @@
                     ]]></OnClick>
                 </Scripts>
             </Button>
-
             <!-- Chars Tab -->
             <Frame name="$parentTab1Frame" parentKey="Tab1Frame" hidden="true">
                 <Size x="768" y="447" />
@@ -189,7 +187,7 @@
                 <Frames>
                     <Button name="$parentCharNameSort" inherits="AltCraftSortButtonTemplate" parentKey="CharNameSort">
                         <Size>
-                            <AbsDimension x="200" y="19" />
+                            <AbsDimension x="160" y="19" />
                         </Size>
                         <Anchors>
                             <Anchor point="TOPLEFT">
@@ -211,9 +209,9 @@
                             </Anchor>
                         </Anchors>
                     </Button>
-                    <Button name="$parentCharMoneySort" inherits="AltCraftSortButtonTemplate" parentKey="CharMoneySort">
+                    <Button name="$parentCharILevelSort" inherits="AltCraftSortButtonTemplate" parentKey="CharILevelSort">
                         <Size>
-                            <AbsDimension x="120" y="19" />
+                            <AbsDimension x="60" y="19" />
                         </Size>
                         <Anchors>
                             <Anchor point="LEFT" relativeTo="$parentCharLevelSort" relativePoint="RIGHT">
@@ -223,9 +221,66 @@
                             </Anchor>
                         </Anchors>
                     </Button>
+                    <Button name="$parentCharMoneySort" inherits="AltCraftSortButtonTemplate" parentKey="CharMoneySort">
+                        <Size>
+                            <AbsDimension x="130" y="19" />
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentCharILevelSort" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="-2" y="0" />
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                    </Button>
+                    <Button name="$parentCharProf1Sort" inherits="AltCraftSortButtonTemplate" parentKey="CharProf1Sort">
+                        <Size>
+                            <AbsDimension x="160" y="19" />
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentCharMoneySort" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="-2" y="0" />
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                    </Button>
+                    <Button name="$parentCharProf2Sort" inherits="AltCraftSortButtonTemplate" parentKey="CharProf2Sort">
+                        <Size>
+                            <AbsDimension x="160" y="19" />
+                        </Size>
+                        <Anchors>
+                            <Anchor point="LEFT" relativeTo="$parentCharProf1Sort" relativePoint="RIGHT">
+                                <Offset>
+                                    <AbsDimension x="-2" y="0" />
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                    </Button>
+                    <ScrollFrame name="$parentCharsPane" inherits="HybridScrollFrameTemplate">
+                        <Anchors>
+                            <Anchor point="TOPLEFT" x="21" y="-104" />
+                            <Anchor point="BOTTOMRIGHT" x="-27" y="40" />
+                        </Anchors>
+                        <Frames>
+                            <Slider name="$parentScrollBar" inherits="HybridScrollBarTemplate">
+                                <Anchors>
+                                    <Anchor point="TOPLEFT" relativePoint="TOPRIGHT">
+                                        <Offset>
+                                            <AbsDimension x="0" y="-12" />
+                                        </Offset>
+                                    </Anchor>
+                                    <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMRIGHT">
+                                        <Offset>
+                                            <AbsDimension x="0" y="12" />
+                                        </Offset>
+                                    </Anchor>
+                                </Anchors>
+                            </Slider>
+                        </Frames>
+                    </ScrollFrame>
                 </Frames>
             </Frame>
-
             <!-- Reagents Tab -->
             <Frame name="$parentTab2Frame" parentKey="Tab2Frame" hidden="true">
                 <Size x="768" y="447" />
@@ -245,7 +300,6 @@
                         </FontString>
                     </Layer>
                 </Layers>
-                <Frames />
             </Frame>
         </Frames>
     </Frame>
