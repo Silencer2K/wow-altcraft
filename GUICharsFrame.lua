@@ -16,7 +16,7 @@ function frame:OnInitialize()
     self.Prof1Sort:SetText(L.sort_char_prof)
     self.Prof2Sort:SetText(L.sort_char_prof)
 
-    self.CharsPane:OnInitialize()
+    self.CharsScroll:OnInitialize()
 
     self:OnSelectSort('name', false)
 end
@@ -33,7 +33,7 @@ end
 
 function frame:Update()
     self:UpdateSort()
-    self.CharsPane:Update()
+    self.CharsScroll:Update()
 end
 
 function frame:UpdateSort()
@@ -92,7 +92,7 @@ function frame:GetSortedChars()
     return list
 end
 
-function frame.CharsPane:OnInitialize()
+function frame.CharsScroll:OnInitialize()
     self.scrollBar.doNotHide = 1
 
     HybridScrollFrame_OnLoad(self)
@@ -102,7 +102,7 @@ function frame.CharsPane:OnInitialize()
     self:Update()
 end
 
-function frame.CharsPane:Update()
+function frame.CharsScroll:Update()
     local chars = self:GetParent():GetSortedChars()
     local numRows = #chars
 

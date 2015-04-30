@@ -193,7 +193,7 @@
                             ]]></OnClick>
                 </Scripts>
             </Button>
-            <ScrollFrame name="$parentCharsPane" inherits="HybridScrollFrameTemplate" parentKey="CharsPane">
+            <ScrollFrame name="$parentCharsScroll" inherits="HybridScrollFrameTemplate" parentKey="CharsScroll">
                 <Anchors>
                     <Anchor point="TOPLEFT" x="21" y="-104" />
                     <Anchor point="BOTTOMRIGHT" x="-27" y="40" />
