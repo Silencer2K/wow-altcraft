@@ -116,26 +116,29 @@ function charsFrame:GetSortedChars()
         tinsert(list, { name = name, data = data })
     end
 
-    if self.sortColumn == 'name' then
+    local column = self.sortColumn or 'name'
+    local reverse = self.sortReverse or false
+
+    if column == 'name' then
         table.sort(list, function(a, b)
-            if self.sortReverse then
+            if reverse then
                 return a.name > b.name
             end
             return a.name < b.name
         end)
-    elseif self.sortColumn == 'level' or self.sortColumn == 'ilevel' or self.sortColumn == 'money' then
+    elseif column == 'level' or column == 'ilevel' or column == 'money' then
         table.sort(list, function(a, b)
-            if self.sortReverse then
-                return (a.data[self.sortColumn] or 0) < (b.data[self.sortColumn] or 0)
+            if reverse then
+                return (a.data[column] or 0) < (b.data[column] or 0)
             end
-            return (a.data[self.sortColumn] or 0) > (b.data[self.sortColumn] or 0)
+            return (a.data[column] or 0) > (b.data[column] or 0)
         end)
     else
         table.sort(list, function(a, b)
-            if self.sortReverse then
-                return (a.data[self.sortColumn] or '') > (b.data[self.sortColumn] or '')
+            if reverse then
+                return (a.data[column] or '') > (b.data[column] or '')
             end
-            return (a.data[self.sortColumn] or '') < (b.data[self.sortColumn] or '')
+            return (a.data[column] or '') < (b.data[column] or '')
         end)
     end
 
