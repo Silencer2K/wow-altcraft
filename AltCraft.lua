@@ -45,10 +45,12 @@ function addon:OnInitialize()
 
     self:RegisterEvent('PLAYER_LEVEL_UP', function(event, level, ...)
         self.charDb.level = 0 + level
+        self:UpdateFrames('level')
     end)
 
     self:RegisterEvent('PLAYER_MONEY', function(...)
         self.charDb.money = GetMoney()
+        self:UpdateFrames('money')
     end)
 
     self:RegisterEvent('BANKFRAME_OPENED', function(...)
@@ -63,6 +65,8 @@ function addon:OnInitialize()
 
     self:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', function(...)
         self.charDb.ilevel = select(2, GetAverageItemLevel())
+        self:UpdateFrames('ilevel')
+
         self:ScanEquip(true)
     end)
 
@@ -84,6 +88,12 @@ function addon:OnInitialize()
         self:ScanBank(true)
     end)
 
+    self:RegisterEvent('SKILL_LINES_CHANGED', function(...)
+        if self.charDb then
+            self:ScanProfs()
+        end
+    end)
+
     GameTooltip:HookScript('OnTooltipCleared', function(self)
         addon:OnGameTooltipCleared(self)
     end)
@@ -98,6 +108,14 @@ function addon:OnInitialize()
     LibStub('AceConfigDialog-3.0'):AddToBlizOptions(addonName, addonName, nil)
 end
 
+function addon:UpdateFrames(what)
+    if AltCraftFrame:IsShown() and AltCraftFrame.Tab1Frame:IsShown() then
+        if what == 'level' or what == 'ilevel' or what == 'money' or what == 'profs' then
+            AltCraftFrame.Tab1Frame:Update()
+        end
+    end
+end
+
 function addon:OnLogin()
     self.char, self.realm = UnitFullName('player')
     self.faction = string.lower(UnitFactionGroup('player'))
@@ -107,6 +125,7 @@ function addon:OnLogin()
         self.realmDb = {
             chars = {},
         }
+
         self.db.global[self.faction][self.realm] = self.realmDb
     end
 
@@ -122,6 +141,7 @@ function addon:OnLogin()
             reagents = {},
             bank = {},
         }
+
         self.realmDb.chars[self.char] = self.charDb
     end
 
@@ -168,6 +188,8 @@ function addon:ScanEquip(deffered)
     end
 
     self.charDb.equip = items
+
+    self:UpdateFrames('equip')
 end
 
 function addon:ScanContainers(fromIndex, toIndex, items)
@@ -209,6 +231,8 @@ function addon:ScanBags(deffered)
     end
 
     self.charDb.bags = self:ScanContainers(BACKPACK_CONTAINER, NUM_BAG_SLOTS)
+
+    self:UpdateFrames('bags')
 end
 
 function addon:ScanReagents(deffered)
@@ -225,6 +249,8 @@ function addon:ScanReagents(deffered)
     end
 
     self.charDb.reagents = self:ScanContainers(REAGENTBANK_CONTAINER, REAGENTBANK_CONTAINER)
+
+    self:UpdateFrames('reagents')
 end
 
 function addon:ScanBank(deffered)
@@ -243,6 +269,8 @@ function addon:ScanBank(deffered)
     self.charDb.bank = self:ScanContainers(NUM_BAG_SLOTS + 1, NUM_BAG_SLOTS + NUM_BANKBAGSLOTS,
         self:ScanContainers(BANK_CONTAINER, BANK_CONTAINER)
     )
+
+    self:UpdateFrames('bank')
 end
 
 function addon:ScanProfs()
@@ -256,6 +284,8 @@ function addon:ScanProfs()
             self.charDb['prof' .. index], self.charDb['prof' .. index .. 'level'] = unpackByIndex({ GetProfessionInfo(profs[index]) }, 1, 3)
         end
     end
+
+    self:UpdateFrames('profs')
 end
 
 function addon:GetChars(faction, realm)
