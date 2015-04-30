@@ -124,6 +124,16 @@ function charsPane:Update()
             button.ILevel:SetText(math.floor(char.data.ilevel or 0))
 
             button.Money:SetText(GetCoinTextureString(char.data.money, 10))
+
+            local profIndex
+            for profIndex = 1, 2 do
+                if char.data['prof' .. profIndex] then
+                    button['Prof' .. profIndex]:SetText(string.format('%s [%d]',
+                        char.data['prof' .. profIndex], char.data['prof' .. profIndex .. 'level']))
+                else
+                    button['Prof' .. profIndex]:SetText('')
+                end
+            end
         else
             button:Hide()
         end

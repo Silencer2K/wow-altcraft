@@ -132,6 +132,8 @@ function addon:OnLogin()
     self:ScanEquip()
     self:ScanBags()
     self:ScanReagents()
+
+    self:ScanProfs()
 end
 
 function addon:ScanEquip(deffered)
@@ -241,6 +243,19 @@ function addon:ScanBank(deffered)
     self.charDb.bank = self:ScanContainers(NUM_BAG_SLOTS + 1, NUM_BAG_SLOTS + NUM_BANKBAGSLOTS,
         self:ScanContainers(BANK_CONTAINER, BANK_CONTAINER)
     )
+end
+
+function addon:ScanProfs()
+    local profs = { GetProfessions() }
+
+    local index
+    for index = 1, 2 do
+        if not profs[index] then
+            self.charDb['prof' .. index], self.charDb['prof' .. index .. 'level'] = nil, nil
+        else
+            self.charDb['prof' .. index], self.charDb['prof' .. index .. 'level'] = unpackByIndex({ GetProfessionInfo(profs[index]) }, 1, 3)
+        end
+    end
 end
 
 function addon:GetChars(faction, realm)
