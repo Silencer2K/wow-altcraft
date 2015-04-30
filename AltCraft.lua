@@ -62,6 +62,7 @@ function addon:OnInitialize()
     end)
 
     self:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', function(...)
+        self.charDb.ilevel = select(2, GetAverageItemLevel())
         self:ScanEquip(true)
     end)
 
@@ -125,6 +126,7 @@ function addon:OnLogin()
     end
 
     self.charDb.level = UnitLevel('player')
+    self.charDb.ilevel = select(2, GetAverageItemLevel())
     self.charDb.money = GetMoney()
 
     self:ScanEquip()
@@ -239,6 +241,17 @@ function addon:ScanBank(deffered)
     self.charDb.bank = self:ScanContainers(NUM_BAG_SLOTS + 1, NUM_BAG_SLOTS + NUM_BANKBAGSLOTS,
         self:ScanContainers(BANK_CONTAINER, BANK_CONTAINER)
     )
+end
+
+function addon:GetChars(faction, realm)
+    faction = faction and string.lower(faction) or self.faction
+    realm = realm or self.realm
+
+    if not self.db.global[faction] or not self.db.global[faction][realm] then
+        return {}
+    end
+
+    return self.db.global[faction][realm].chars
 end
 
 function addon:OnGameTooltipCleared(tooltip)

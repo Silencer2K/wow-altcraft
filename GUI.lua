@@ -3,27 +3,27 @@ local addonName, addon = ...
 local L = LibStub("AceLocale-3.0"):GetLocale(addonName)
 
 local FRAME_TABS = 2
+local CHAR_SCROLL_ITEM_HEIGHT = 20
 
 local frame = AltCraftFrame
+
+local charsFrame = frame.Tab1Frame
+local charsPane = charsFrame.CharsPane
+
+local reagentsFrame = frame.Tab2Frame
 
 function frame:OnInitialize()
     tinsert(UISpecialFrames, self:GetName())
 
+    -- Chars Tab
     self.Tab1:SetText(L.tab_chars)
-    self.Tab1Frame.Title:SetText(L.tab_chars_title)
+    charsFrame:OnInitialize()
 
-    self.Tab1Frame.CharNameSort:SetText(L.sort_char_name)
-    self.Tab1Frame.CharLevelSort:SetText(L.sort_char_level)
-    self.Tab1Frame.CharILevelSort:SetText(L.sort_char_ilevel)
-    self.Tab1Frame.CharMoneySort:SetText(L.sort_char_money)
-    self.Tab1Frame.CharProf1Sort:SetText(L.sort_char_prof)
-    self.Tab1Frame.CharProf2Sort:SetText(L.sort_char_prof)
-
+    -- Reagents Tab
     self.Tab2:SetText(L.tab_reagents)
-    self.Tab2Frame.Title:SetText(L.tab_reagents_title)
+    reagentsFrame:OnInitialize()
 
     PanelTemplates_SetNumTabs(self, FRAME_TABS)
-
     self:OnSelectTab(1)
 end
 
@@ -52,8 +52,74 @@ function frame:OnSelectTab(index)
     for i = 1, FRAME_TABS do
         if index == i then
             self['Tab' .. i .. 'Frame']:Show()
+            self['Tab' .. i .. 'Frame']:Update()
         else
             self['Tab' .. i .. 'Frame']:Hide()
         end
     end
+end
+
+function charsFrame:OnInitialize()
+    self.Title:SetText(L.tab_chars_title)
+
+    self.CharNameSort:SetText(L.sort_char_name)
+    self.CharLevelSort:SetText(L.sort_char_level)
+    self.CharILevelSort:SetText(L.sort_char_ilevel)
+    self.CharMoneySort:SetText(L.sort_char_money)
+    self.CharProf1Sort:SetText(L.sort_char_prof)
+    self.CharProf2Sort:SetText(L.sort_char_prof)
+
+    self.CharsPane:OnInitialize()
+end
+
+function charsFrame:Update()
+    self.CharsPane:Update()
+end
+
+function charsFrame:GetSortedChars()
+    local list = {}
+
+    local name, data
+    for name, data in pairs(addon:GetChars()) do
+        tinsert(list, { name = name, data = data })
+    end
+
+    return list
+end
+
+function charsPane:OnInitialize()
+    self.scrollBar.doNotHide = 1
+
+    HybridScrollFrame_OnLoad(self)
+    self.update = function() self:Update() end
+
+    HybridScrollFrame_CreateButtons(self, "AltCraftCharsButtonTemplate", 0, 0)
+    self:Update()
+end
+
+function charsPane:Update()
+    local chars = self:GetParent():GetSortedChars()
+    local numRows = #chars
+
+    HybridScrollFrame_Update(self, numRows * CHAR_SCROLL_ITEM_HEIGHT, self:GetHeight())
+
+    local scrollOffset = HybridScrollFrame_GetOffset(self)
+
+    local i
+    for i = 1, #self.buttons do
+        local button = self.buttons[i]
+
+        if scrollOffset + i <= numRows then
+            button:Show()
+        else
+            button:Hide()
+        end
+    end
+end
+
+function reagentsFrame:OnInitialize()
+    self.Title:SetText(L.tab_reagents_title)
+end
+
+function reagentsFrame:Update()
 end

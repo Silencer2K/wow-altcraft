@@ -11,4 +11,5 @@
     <Include file="libs\AceTimer-3.0\AceTimer-3.0.xml" />
     <Script file="libs\LibDataBroker-1.1\LibDataBroker-1.1.lua" />
     <Script file="libs\LibDBIcon-1.0\LibDBIcon-1.0.lua" />
+    <Script file="libs\S2KTools-1.0\S2KTools-1.0.lua" />
 </Ui>

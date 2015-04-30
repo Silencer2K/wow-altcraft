@@ -74,6 +74,38 @@
             </Anchors>
         </HighlightTexture>
     </Button>
+    <Button name="AltCraftCharsButtonTemplate" virtual="true">
+        <Size>
+            <AbsDimension x="720" y="20" />
+        </Size>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture name="$parentStripe" setAllPoints="true" file="Interface\GuildFrame\GuildFrame" parentKey="stripe">
+                    <TexCoords left="0.36230469" right="0.38183594" top="0.95898438" bottom="0.99804688" />
+                </Texture>
+            </Layer>
+            <Layer level="ARTWORK">
+                <Texture name="$parentClassIcon" file="Interface\Glues\CharacterCreate\UI-CharacterCreate-Classes" parentKey="ClassIcon">
+                    <Anchors>
+                        <Anchor point="LEFT" x="36" y="0" />
+                    </Anchors>
+                    <Size>
+                        <AbsDimension x="16" y="16" />
+                    </Size>
+                    <TexCoords left="0" right="0.25" top="0" bottom="0.25" />
+                </Texture>
+                <FontString name="$parentCharName" inherits="GameFontHighlightSmall" wordwrap="false" parentKey="CharName">
+                    <Size>
+                        <AbsDimension x="10" y="10" />
+                    </Size>
+                    <Anchors>
+                        <Anchor point="LEFT" x="0" y="0" />
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <HighlightTexture file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar" alphaMode="ADD" setAllPoints="true" />
+    </Button>
     <Frame name="AltCraftFrame" toplevel="true" parent="UIParent" movable="true" enableMouse="true" hidden="true">
         <Size x="768" y="447" />
         <Anchors>
@@ -257,7 +289,7 @@
                             </Anchor>
                         </Anchors>
                     </Button>
-                    <ScrollFrame name="$parentCharsPane" inherits="HybridScrollFrameTemplate">
+                    <ScrollFrame name="$parentCharsPane" inherits="HybridScrollFrameTemplate" parentKey="CharsPane">
                         <Anchors>
                             <Anchor point="TOPLEFT" x="21" y="-104" />
                             <Anchor point="BOTTOMRIGHT" x="-27" y="40" />
