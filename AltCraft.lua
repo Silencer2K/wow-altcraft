@@ -173,7 +173,7 @@ function addon:ScanEquip(deffered)
     local slotIndex
 
     for slotIndex = INVSLOT_FIRST_EQUIPPED, INVSLOT_LAST_EQUIPPED do
-        local itemId = GetInventoryItemID("player", slotIndex)
+        local itemId = GetInventoryItemID('player', slotIndex)
         local count = 1
 
         if itemId then

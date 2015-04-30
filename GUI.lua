@@ -1,6 +1,6 @@
 local addonName, addon = ...
 
-local L = LibStub("AceLocale-3.0"):GetLocale(addonName)
+local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
 
 local FRAME_TABS = 2
 local CHAR_SCROLL_ITEM_HEIGHT = 20
@@ -98,9 +98,9 @@ function charsFrame:UpdateSort()
             _G[button:GetName() .. 'Arrow']:Show()
 
             if self.sortReverse then
-                _G[button:GetName().."Arrow"]:SetTexCoord(0, 0.5625, 1.0, 0);
+                _G[button:GetName()..'Arrow']:SetTexCoord(0, 0.5625, 1.0, 0);
             else
-                _G[button:GetName().."Arrow"]:SetTexCoord(0, 0.5625, 0, 1.0);
+                _G[button:GetName()..'Arrow']:SetTexCoord(0, 0.5625, 0, 1.0);
             end
         else
             _G[button:GetName() .. 'Arrow']:Hide()
@@ -151,7 +151,7 @@ function charsPane:OnInitialize()
     HybridScrollFrame_OnLoad(self)
     self.update = function() self:Update() end
 
-    HybridScrollFrame_CreateButtons(self, "AltCraftCharsButtonTemplate", 0, 0)
+    HybridScrollFrame_CreateButtons(self, 'AltCraftCharsButtonTemplate', 0, 0)
     self:Update()
 end
 
@@ -171,7 +171,7 @@ function charsPane:Update()
         if scrollOffset + i <= numRows then
             button:Show()
 
-            button.ClassIcon:SetTexture("Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes")
+            button.ClassIcon:SetTexture('Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes')
             button.ClassIcon:SetTexCoord(unpack(CLASS_ICON_TCOORDS[char.data.class]))
 
             button.Name:SetText(char.name)
