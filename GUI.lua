@@ -62,12 +62,12 @@ end
 function charsFrame:OnInitialize()
     self.Title:SetText(L.tab_chars_title)
 
-    self.CharNameSort:SetText(L.sort_char_name)
-    self.CharLevelSort:SetText(L.sort_char_level)
-    self.CharILevelSort:SetText(L.sort_char_ilevel)
-    self.CharMoneySort:SetText(L.sort_char_money)
-    self.CharProf1Sort:SetText(L.sort_char_prof)
-    self.CharProf2Sort:SetText(L.sort_char_prof)
+    self.NameSort:SetText(L.sort_char_name)
+    self.LevelSort:SetText(L.sort_char_level)
+    self.ILevelSort:SetText(L.sort_char_ilevel)
+    self.MoneySort:SetText(L.sort_char_money)
+    self.Prof1Sort:SetText(L.sort_char_prof)
+    self.Prof2Sort:SetText(L.sort_char_prof)
 
     self.CharsPane:OnInitialize()
 end
@@ -108,9 +108,22 @@ function charsPane:Update()
     local i
     for i = 1, #self.buttons do
         local button = self.buttons[i]
+        local char = chars[i + scrollOffset]
 
         if scrollOffset + i <= numRows then
             button:Show()
+
+            button.ClassIcon:SetTexture("Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes")
+            button.ClassIcon:SetTexCoord(unpack(CLASS_ICON_TCOORDS[char.data.class]))
+
+            button.Name:SetText(char.name)
+            button.Name:SetTextColor(RAID_CLASS_COLORS[char.data.class].r,
+                RAID_CLASS_COLORS[char.data.class].g, RAID_CLASS_COLORS[char.data.class].b)
+
+            button.Level:SetText(char.data.level)
+            button.ILevel:SetText(math.floor(char.data.ilevel or 0))
+
+            button.Money:SetText(GetCoinTextureString(char.data.money, 10))
         else
             button:Hide()
         end
