@@ -24,4 +24,10 @@ AltCraft.lua
 GUI.xml
 GUI.lua
 
+GUICharsFrame.xml
+GUICharsFrame.lua
+
+GUIRegsFrame.xml
+GUIRegsFrame.lua
+
 Config.lua
