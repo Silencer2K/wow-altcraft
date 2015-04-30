@@ -268,6 +268,11 @@
                                 </Offset>
                             </Anchor>
                         </Anchors>
+                        <Scripts>
+                            <OnClick><![CDATA[
+                                self:GetParent():OnSelectSort('name')
+                            ]]></OnClick>
+                        </Scripts>
                     </Button>
                     <Button name="$parentLevelSort" inherits="AltCraftSortButtonTemplate" parentKey="LevelSort">
                         <Size>
@@ -280,6 +285,11 @@
                                 </Offset>
                             </Anchor>
                         </Anchors>
+                        <Scripts>
+                            <OnClick><![CDATA[
+                                self:GetParent():OnSelectSort('level')
+                            ]]></OnClick>
+                        </Scripts>
                     </Button>
                     <Button name="$parentILevelSort" inherits="AltCraftSortButtonTemplate" parentKey="ILevelSort">
                         <Size>
@@ -292,6 +302,11 @@
                                 </Offset>
                             </Anchor>
                         </Anchors>
+                        <Scripts>
+                            <OnClick><![CDATA[
+                                self:GetParent():OnSelectSort('ilevel')
+                            ]]></OnClick>
+                        </Scripts>
                     </Button>
                     <Button name="$parentMoneySort" inherits="AltCraftSortButtonTemplate" parentKey="MoneySort">
                         <Size>
@@ -304,6 +319,11 @@
                                 </Offset>
                             </Anchor>
                         </Anchors>
+                        <Scripts>
+                            <OnClick><![CDATA[
+                                self:GetParent():OnSelectSort('money')
+                            ]]></OnClick>
+                        </Scripts>
                     </Button>
                     <Button name="$parentProf1Sort" inherits="AltCraftSortButtonTemplate" parentKey="Prof1Sort">
                         <Size>
@@ -316,6 +336,11 @@
                                 </Offset>
                             </Anchor>
                         </Anchors>
+                        <Scripts>
+                            <OnClick><![CDATA[
+                                self:GetParent():OnSelectSort('prof1')
+                            ]]></OnClick>
+                        </Scripts>
                     </Button>
                     <Button name="$parentProf2Sort" inherits="AltCraftSortButtonTemplate" parentKey="Prof2Sort">
                         <Size>
@@ -328,6 +353,11 @@
                                 </Offset>
                             </Anchor>
                         </Anchors>
+                        <Scripts>
+                            <OnClick><![CDATA[
+                                self:GetParent():OnSelectSort('prof2')
+                            ]]></OnClick>
+                        </Scripts>
                     </Button>
                     <ScrollFrame name="$parentCharsPane" inherits="HybridScrollFrameTemplate" parentKey="CharsPane">
                         <Anchors>

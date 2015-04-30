@@ -70,10 +70,42 @@ function charsFrame:OnInitialize()
     self.Prof2Sort:SetText(L.sort_char_prof)
 
     self.CharsPane:OnInitialize()
+
+    self:OnSelectSort('name', false)
+end
+
+function charsFrame:OnSelectSort(column, reverse)
+    if reverse == nil and self.sortColumn == column then
+        self.sortReverse = not self.sortReverse
+    else
+        self.sortColumn = column
+        self.sortReverse = false
+    end
+    self:Update()
 end
 
 function charsFrame:Update()
+    self:UpdateSort()
     self.CharsPane:Update()
+end
+
+function charsFrame:UpdateSort()
+    local column
+    for column in valuesIterator({ 'Name', 'Level', 'ILevel', 'Money', 'Prof1', 'Prof2' }) do
+        local button = self[column .. 'Sort']
+
+        if self.sortColumn == column:lower() then
+            _G[button:GetName() .. 'Arrow']:Show()
+
+            if self.sortReverse then
+                _G[button:GetName().."Arrow"]:SetTexCoord(0, 0.5625, 1.0, 0);
+            else
+                _G[button:GetName().."Arrow"]:SetTexCoord(0, 0.5625, 0, 1.0);
+            end
+        else
+            _G[button:GetName() .. 'Arrow']:Hide()
+        end
+    end
 end
 
 function charsFrame:GetSortedChars()
@@ -82,6 +114,29 @@ function charsFrame:GetSortedChars()
     local name, data
     for name, data in pairs(addon:GetChars()) do
         tinsert(list, { name = name, data = data })
+    end
+
+    if self.sortColumn == 'name' then
+        table.sort(list, function(a, b)
+            if self.sortReverse then
+                return a.name > b.name
+            end
+            return a.name < b.name
+        end)
+    elseif self.sortColumn == 'level' or self.sortColumn == 'ilevel' or self.sortColumn == 'money' then
+        table.sort(list, function(a, b)
+            if self.sortReverse then
+                return (a.data[self.sortColumn] or 0) < (b.data[self.sortColumn] or 0)
+            end
+            return (a.data[self.sortColumn] or 0) > (b.data[self.sortColumn] or 0)
+        end)
+    else
+        table.sort(list, function(a, b)
+            if self.sortReverse then
+                return (a.data[self.sortColumn] or '') > (b.data[self.sortColumn] or '')
+            end
+            return (a.data[self.sortColumn] or '') < (b.data[self.sortColumn] or '')
+        end)
     end
 
     return list
