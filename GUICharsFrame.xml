@@ -131,14 +131,16 @@
                     </Layer>
                 </Layers>
                 <Scripts>
-                    <OnLoad function="GuildRosterViewDropdown_OnLoad" />
+                    <OnLoad><![CDATA[
+                        UIDropDownMenu_SetWidth(self, 120)
+                    ]]></OnLoad>
                 </Scripts>
             </Frame>
             <Frame name="$parentSelectRealm" inherits="UIDropDownMenuTemplate" parentKey="SelectRealm">
                 <Anchors>
                     <Anchor point="LEFT" relativeTo="$parentSelectFaction" relativePoint="RIGHT">
                         <Offset>
-                            <AbsDimension x="200" y="0" />
+                            <AbsDimension x="100" y="0" />
                         </Offset>
                     </Anchor>
                 </Anchors>
@@ -152,7 +154,9 @@
                     </Layer>
                 </Layers>
                 <Scripts>
-                    <OnLoad function="GuildRosterViewDropdown_OnLoad" />
+                    <OnLoad><![CDATA[
+                        UIDropDownMenu_SetWidth(self, 120)
+                    ]]></OnLoad>
                 </Scripts>
             </Frame>
             <Button name="$parentNameSort" inherits="AltCraftSortButtonTemplate" parentKey="NameSort">
