@@ -91,108 +91,6 @@
             </Layer>
         </Layers>
         <Frames>
-            <Button name="$parentNameSort" inherits="AltCraftSortButtonTemplate" parentKey="NameSort">
-                <Size>
-                    <AbsDimension x="160" y="19" />
-                </Size>
-                <Anchors>
-                    <Anchor point="TOPLEFT">
-                        <Offset>
-                            <AbsDimension x="18" y="-82" />
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick><![CDATA[
-                                self:GetParent():OnSelectSort('name')
-                            ]]></OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentLevelSort" inherits="AltCraftSortButtonTemplate" parentKey="LevelSort">
-                <Size>
-                    <AbsDimension x="60" y="19" />
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentNameSort" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="-2" y="0" />
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick><![CDATA[
-                                self:GetParent():OnSelectSort('level')
-                            ]]></OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentILevelSort" inherits="AltCraftSortButtonTemplate" parentKey="ILevelSort">
-                <Size>
-                    <AbsDimension x="60" y="19" />
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentLevelSort" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="-2" y="0" />
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick><![CDATA[
-                                self:GetParent():OnSelectSort('ilevel')
-                            ]]></OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentMoneySort" inherits="AltCraftSortButtonTemplate" parentKey="MoneySort">
-                <Size>
-                    <AbsDimension x="130" y="19" />
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentILevelSort" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="-2" y="0" />
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick><![CDATA[
-                                self:GetParent():OnSelectSort('money')
-                            ]]></OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentProf1Sort" inherits="AltCraftSortButtonTemplate" parentKey="Prof1Sort">
-                <Size>
-                    <AbsDimension x="160" y="19" />
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentMoneySort" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="-2" y="0" />
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick><![CDATA[
-                                self:GetParent():OnSelectSort('prof1')
-                            ]]></OnClick>
-                </Scripts>
-            </Button>
-            <Button name="$parentProf2Sort" inherits="AltCraftSortButtonTemplate" parentKey="Prof2Sort">
-                <Size>
-                    <AbsDimension x="160" y="19" />
-                </Size>
-                <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentProf1Sort" relativePoint="RIGHT">
-                        <Offset>
-                            <AbsDimension x="-2" y="0" />
-                        </Offset>
-                    </Anchor>
-                </Anchors>
-                <Scripts>
-                    <OnClick><![CDATA[
-                                self:GetParent():OnSelectSort('prof2')
-                            ]]></OnClick>
-                </Scripts>
-            </Button>
             <ScrollFrame name="$parentCharsScroll" inherits="HybridScrollFrameTemplate" parentKey="CharsScroll">
                 <Anchors>
                     <Anchor point="TOPLEFT" x="21" y="-104" />
@@ -215,6 +113,150 @@
                     </Slider>
                 </Frames>
             </ScrollFrame>
+            <Frame name="$parentSelectFaction" inherits="UIDropDownMenuTemplate" parentKey="SelectFaction">
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentCharsScroll">
+                        <Offset>
+                            <AbsDimension x="120" y="58" />
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString inherits="GameFontNormal" parentKey="Label">
+                            <Anchors>
+                                <Anchor point="RIGHT" relativePoint="LEFT" x="12" y="2" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnLoad function="GuildRosterViewDropdown_OnLoad" />
+                </Scripts>
+            </Frame>
+            <Frame name="$parentSelectRealm" inherits="UIDropDownMenuTemplate" parentKey="SelectRealm">
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentSelectFaction" relativePoint="RIGHT">
+                        <Offset>
+                            <AbsDimension x="200" y="0" />
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer level="ARTWORK">
+                        <FontString inherits="GameFontNormal" parentKey="Label">
+                            <Anchors>
+                                <Anchor point="RIGHT" relativePoint="LEFT" x="12" y="2" />
+                            </Anchors>
+                        </FontString>
+                    </Layer>
+                </Layers>
+                <Scripts>
+                    <OnLoad function="GuildRosterViewDropdown_OnLoad" />
+                </Scripts>
+            </Frame>
+            <Button name="$parentNameSort" inherits="AltCraftSortButtonTemplate" parentKey="NameSort">
+                <Size>
+                    <AbsDimension x="160" y="19" />
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT" relativeTo="$parentCharsScroll">
+                        <Offset>
+                            <AbsDimension x="-3" y="22" />
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick><![CDATA[
+                                self:GetParent():OnSelectSort('name')
+                    ]]></OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentLevelSort" inherits="AltCraftSortButtonTemplate" parentKey="LevelSort">
+                <Size>
+                    <AbsDimension x="60" y="19" />
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentNameSort" relativePoint="RIGHT">
+                        <Offset>
+                            <AbsDimension x="-2" y="0" />
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick><![CDATA[
+                                self:GetParent():OnSelectSort('level')
+                    ]]></OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentILevelSort" inherits="AltCraftSortButtonTemplate" parentKey="ILevelSort">
+                <Size>
+                    <AbsDimension x="60" y="19" />
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentLevelSort" relativePoint="RIGHT">
+                        <Offset>
+                            <AbsDimension x="-2" y="0" />
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick><![CDATA[
+                                self:GetParent():OnSelectSort('ilevel')
+                    ]]></OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentMoneySort" inherits="AltCraftSortButtonTemplate" parentKey="MoneySort">
+                <Size>
+                    <AbsDimension x="130" y="19" />
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentILevelSort" relativePoint="RIGHT">
+                        <Offset>
+                            <AbsDimension x="-2" y="0" />
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick><![CDATA[
+                                self:GetParent():OnSelectSort('money')
+                    ]]></OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentProf1Sort" inherits="AltCraftSortButtonTemplate" parentKey="Prof1Sort">
+                <Size>
+                    <AbsDimension x="160" y="19" />
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentMoneySort" relativePoint="RIGHT">
+                        <Offset>
+                            <AbsDimension x="-2" y="0" />
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick><![CDATA[
+                                self:GetParent():OnSelectSort('prof1')
+                    ]]></OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentProf2Sort" inherits="AltCraftSortButtonTemplate" parentKey="Prof2Sort">
+                <Size>
+                    <AbsDimension x="160" y="19" />
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentProf1Sort" relativePoint="RIGHT">
+                        <Offset>
+                            <AbsDimension x="-2" y="0" />
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick><![CDATA[
+                                self:GetParent():OnSelectSort('prof2')
+                    ]]></OnClick>
+                </Scripts>
+            </Button>
         </Frames>
     </Frame>
 </Ui>

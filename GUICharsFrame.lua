@@ -9,6 +9,9 @@ local frame = AltCraftFrameTab1Frame
 function frame:OnInitialize()
     self.Title:SetText(L.tab_chars_title)
 
+    self.SelectFaction.Label:SetText(string.format('%s:', L.sel_faction))
+    self.SelectRealm.Label:SetText(string.format('%s:', L.sel_realm))
+
     self.NameSort:SetText(L.sort_char_name)
     self.LevelSort:SetText(L.sort_char_level)
     self.ILevelSort:SetText(L.sort_char_ilevel)
