@@ -46,7 +46,6 @@ function frame:OnSelectTab(index)
     for i = 1, FRAME_TABS do
         if index == i then
             self['Tab' .. i .. 'Frame']:Show()
-            self['Tab' .. i .. 'Frame']:Update()
         else
             self['Tab' .. i .. 'Frame']:Hide()
         end

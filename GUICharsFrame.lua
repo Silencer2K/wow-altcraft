@@ -24,6 +24,13 @@ function frame:OnInitialize()
     self:OnSelectSort(addon.db.profile.chars_tab.sort_column, addon.db.profile.chars_tab.sort_reverse)
 end
 
+function frame:OnShow()
+    self:UpdateSelectRealm()
+    self:UpdateSelectFaction()
+
+    self:Update()
+end
+
 function frame:OnSelectSort(column, reverse)
     if reverse == nil and self.sortColumn == column then
         self.sortReverse = not self.sortReverse
@@ -62,11 +69,80 @@ function frame:UpdateSort()
     end
 end
 
+function frame:UpdateSelectRealm()
+    UIDropDownMenu_Initialize(self.SelectRealm, function()
+        local info = UIDropDownMenu_CreateInfo()
+
+        info.func = function(button)
+            UIDropDownMenu_SetSelectedValue(self.SelectRealm, button.value)
+
+            self.selectedRealm = button.value
+
+            self:UpdateSelectFaction()
+            self:Update()
+        end
+
+        local selectedRealm = self.selectedRealm or addon.realm
+
+        local realm
+        for realm in valuesIterator(addon:GetRealms()) do
+            info.value = realm
+            info.text = string.format(
+                '%s (%d)',
+                realm,
+                tableLength(addon:GetChars('alliance', realm)) + tableLength(addon:GetChars('horde', realm))
+            )
+
+            UIDropDownMenu_AddButton(info)
+
+            selectedRealm = realm == self.selectedRealm and realm or selectedRealm
+        end
+
+        UIDropDownMenu_SetSelectedValue(self.SelectRealm, selectedRealm)
+
+        self.selectedRealm = selectedRealm
+    end)
+end
+
+function frame:UpdateSelectFaction()
+    UIDropDownMenu_Initialize(self.SelectFaction, function()
+        local info = UIDropDownMenu_CreateInfo()
+
+        info.func = function(button)
+            UIDropDownMenu_SetSelectedValue(self.SelectFaction, button.value)
+
+            self.selectedFaction = button.value
+            self:Update()
+        end
+
+        local selectedFaction = self.selectedFaction or addon.faction
+
+        local faction
+        for faction in valuesIterator({ 'alliance', 'horde' }) do
+            info.value = faction
+            info.text = string.format(
+                '|c%s%s (%d)|r',
+                addon:GetFactionColor(faction),
+                _G['FACTION_' .. faction:upper()],
+                tableLength(addon:GetChars(faction, self.selectedRealm))
+            )
+
+            UIDropDownMenu_AddButton(info)
+
+            selectedFaction = faction == self.selectedFaction and faction or selectedFaction
+        end
+
+        UIDropDownMenu_SetSelectedValue(self.SelectFaction, selectedFaction)
+
+        self.selectedFaction = selectedFaction
+    end)
+end
+
 function frame:GetSortedChars()
     local list = {}
 
     local name, data
-    for name, data in pairs(addon:GetChars()) do
+    for name, data in pairs(addon:GetChars(self.selectedFaction, self.selectedRealm)) do
         tinsert(list, { name = name, data = data })
     end
 

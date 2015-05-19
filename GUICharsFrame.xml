@@ -113,42 +113,50 @@
                     </Slider>
                 </Frames>
             </ScrollFrame>
-            <Frame name="$parentSelectFaction" inherits="UIDropDownMenuTemplate" parentKey="SelectFaction">
+            <Frame name="$parentSelectRealm" inherits="UIDropDownMenuTemplate" parentKey="SelectRealm">
                 <Anchors>
                     <Anchor point="TOPLEFT" relativeTo="$parentCharsScroll">
                         <Offset>
-                            <AbsDimension x="120" y="58" />
+                            <AbsDimension x="50" y="53" />
                         </Offset>
                     </Anchor>
                 </Anchors>
                 <Layers>
                     <Layer level="ARTWORK">
-                        <FontString inherits="GameFontNormal" parentKey="Label">
+                        <FontString inherits="GameFontHighlightSmall" parentKey="Label">
                             <Anchors>
-                                <Anchor point="RIGHT" relativePoint="LEFT" x="12" y="2" />
+                                <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
+                                    <Offset>
+                                        <AbsDimension x="20" y="0" />
+                                    </Offset>
+                                </Anchor>
                             </Anchors>
                         </FontString>
                     </Layer>
                 </Layers>
                 <Scripts>
                     <OnLoad><![CDATA[
-                        UIDropDownMenu_SetWidth(self, 120)
+                        UIDropDownMenu_SetWidth(self, 150)
                     ]]></OnLoad>
                 </Scripts>
             </Frame>
-            <Frame name="$parentSelectRealm" inherits="UIDropDownMenuTemplate" parentKey="SelectRealm">
+            <Frame name="$parentSelectFaction" inherits="UIDropDownMenuTemplate" parentKey="SelectFaction">
                 <Anchors>
-                    <Anchor point="LEFT" relativeTo="$parentSelectFaction" relativePoint="RIGHT">
+                    <Anchor point="LEFT" relativeTo="$parentSelectRealm" relativePoint="RIGHT">
                         <Offset>
-                            <AbsDimension x="100" y="0" />
+                            <AbsDimension x="-20" y="0" />
                         </Offset>
                     </Anchor>
                 </Anchors>
                 <Layers>
                     <Layer level="ARTWORK">
-                        <FontString inherits="GameFontNormal" parentKey="Label">
+                        <FontString inherits="GameFontHighlightSmall" parentKey="Label">
                             <Anchors>
-                                <Anchor point="RIGHT" relativePoint="LEFT" x="12" y="2" />
+                                <Anchor point="BOTTOMLEFT" relativePoint="TOPLEFT">
+                                    <Offset>
+                                        <AbsDimension x="20" y="0" />
+                                    </Offset>
+                                </Anchor>
                             </Anchors>
                         </FontString>
                     </Layer>
@@ -172,7 +180,7 @@
                 </Anchors>
                 <Scripts>
                     <OnClick><![CDATA[
-                                self:GetParent():OnSelectSort('name')
+                        self:GetParent():OnSelectSort('name')
                     ]]></OnClick>
                 </Scripts>
             </Button>
@@ -189,7 +197,7 @@
                 </Anchors>
                 <Scripts>
                     <OnClick><![CDATA[
-                                self:GetParent():OnSelectSort('level')
+                        self:GetParent():OnSelectSort('level')
                     ]]></OnClick>
                 </Scripts>
             </Button>
@@ -206,7 +214,7 @@
                 </Anchors>
                 <Scripts>
                     <OnClick><![CDATA[
-                                self:GetParent():OnSelectSort('ilevel')
+                        self:GetParent():OnSelectSort('ilevel')
                     ]]></OnClick>
                 </Scripts>
             </Button>
@@ -223,7 +231,7 @@
                 </Anchors>
                 <Scripts>
                     <OnClick><![CDATA[
-                                self:GetParent():OnSelectSort('money')
+                        self:GetParent():OnSelectSort('money')
                     ]]></OnClick>
                 </Scripts>
             </Button>
@@ -240,7 +248,7 @@
                 </Anchors>
                 <Scripts>
                     <OnClick><![CDATA[
-                                self:GetParent():OnSelectSort('prof1')
+                        self:GetParent():OnSelectSort('prof1')
                     ]]></OnClick>
                 </Scripts>
             </Button>
@@ -257,10 +265,15 @@
                 </Anchors>
                 <Scripts>
                     <OnClick><![CDATA[
-                                self:GetParent():OnSelectSort('prof2')
+                        self:GetParent():OnSelectSort('prof2')
                     ]]></OnClick>
                 </Scripts>
             </Button>
         </Frames>
+        <Scripts>
+            <OnShow><![CDATA[
+                self:OnShow()
+            ]]></OnShow>
+        </Scripts>
     </Frame>
 </Ui>

@@ -299,6 +299,33 @@ function addon:GetChars(faction, realm)
     return self.db.global[faction][realm].chars
 end
 
+function addon:GetRealms()
+    local list, added = {}, {}
+
+    local faction, realm
+    for faction in valuesIterator({ 'alliance', 'horde' }) do
+        for realm in pairs(self.db.global[faction]) do
+            if not tableIsEmpty(self.db.global[faction][realm]) and not added[realm] then
+                added[realm] = 1
+                table.insert(list, realm)
+            end
+        end
+    end
+
+    table.sort(list)
+
+    return list
+end
+
+function addon:GetFactionColor(faction)
+    faction = faction and string.lower(faction) or self.faction
+
+    local ids = { horde = 0, alliance = 1 }
+    local color = PLAYER_FACTION_COLORS[ids[faction]]
+
+    return string.format("ff%02x%02x%02x", color.r * 255, color.g * 255, color.b * 255)
+end
+
 function addon:OnGameTooltipCleared(tooltip)
 end
 
