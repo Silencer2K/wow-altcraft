@@ -8,6 +8,10 @@ function addon:GetDefaults()
             minimap = {
                 hide = false,
             },
+            chars_tab = {
+                sort_column = 'name',
+                sort_reverse = false,
+            },
         },
         global = {
             alliance = {},

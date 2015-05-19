@@ -21,7 +21,7 @@ function frame:OnInitialize()
 
     self.CharsScroll:OnInitialize()
 
-    self:OnSelectSort('name', false)
+    self:OnSelectSort(addon.db.profile.chars_tab.sort_column, addon.db.profile.chars_tab.sort_reverse)
 end
 
 function frame:OnSelectSort(column, reverse)
@@ -31,6 +31,10 @@ function frame:OnSelectSort(column, reverse)
         self.sortColumn = column
         self.sortReverse = false
     end
+
+    addon.db.profile.chars_tab.sort_column = self.sortColumn
+    addon.db.profile.chars_tab.sort_reverse = self.sortReverse
+
     self:Update()
 end
 
