@@ -25,9 +25,6 @@ function frame:OnInitialize()
 end
 
 function frame:OnShow()
-    self:UpdateSelectRealm()
-    self:UpdateSelectFaction()
-
     self:Update()
 end
 
@@ -46,27 +43,10 @@ function frame:OnSelectSort(column, reverse)
 end
 
 function frame:Update()
+    self:UpdateSelectRealm()
+    self:UpdateSelectFaction()
     self:UpdateSort()
     self.CharsScroll:Update()
-end
-
-function frame:UpdateSort()
-    local column
-    for column in valuesIterator({ 'Name', 'Level', 'ILevel', 'Money', 'Prof1', 'Prof2' }) do
-        local button = self[column .. 'Sort']
-
-        if self.sortColumn == column:lower() then
-            _G[button:GetName() .. 'Arrow']:Show()
-
-            if self.sortReverse then
-                _G[button:GetName()..'Arrow']:SetTexCoord(0, 0.5625, 1.0, 0);
-            else
-                _G[button:GetName()..'Arrow']:SetTexCoord(0, 0.5625, 0, 1.0);
-            end
-        else
-            _G[button:GetName() .. 'Arrow']:Hide()
-        end
-    end
 end
 
 function frame:UpdateSelectRealm()
@@ -77,8 +57,6 @@ function frame:UpdateSelectRealm()
             UIDropDownMenu_SetSelectedValue(self.SelectRealm, button.value)
 
             self.selectedRealm = button.value
-
-            self:UpdateSelectFaction()
             self:Update()
         end
 
@@ -173,6 +151,25 @@ function frame:GetSortedChars()
     end
 
     return list
+end
+
+function frame:UpdateSort()
+    local column
+    for column in valuesIterator({ 'Name', 'Level', 'ILevel', 'Money', 'Prof1', 'Prof2' }) do
+        local button = self[column .. 'Sort']
+
+        if self.sortColumn == column:lower() then
+            _G[button:GetName() .. 'Arrow']:Show()
+
+            if self.sortReverse then
+                _G[button:GetName()..'Arrow']:SetTexCoord(0, 0.5625, 1.0, 0);
+            else
+                _G[button:GetName()..'Arrow']:SetTexCoord(0, 0.5625, 0, 1.0);
+            end
+        else
+            _G[button:GetName() .. 'Arrow']:Hide()
+        end
+    end
 end
 
 function frame.CharsScroll:OnInitialize()
