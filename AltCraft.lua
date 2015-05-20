@@ -104,6 +104,14 @@ function addon:OnInitialize()
         self:ProcessOutbox()
     end)
 
+    self:RegisterEvent('MAIL_INBOX_UPDATE', function(...)
+        self:ScanInbox(true)
+    end)
+
+    self:RegisterEvent('MAIL_CLOSED', function(...)
+        self:ScanInbox()
+    end)
+
     GameTooltip:HookScript('OnTooltipCleared', function(self)
         addon:OnGameTooltipCleared(self)
     end)
@@ -187,8 +195,8 @@ function addon:ScanEquip(deffered)
     end
 
     items = {}
-    local slotIndex
 
+    local slotIndex
     for slotIndex = INVSLOT_FIRST_EQUIPPED, INVSLOT_LAST_EQUIPPED do
         local itemId = GetInventoryItemID('player', slotIndex)
         local count = 1
@@ -289,13 +297,13 @@ end
 function addon:ScanProfs()
     local profs = { GetProfessions() }
 
-    local index
-    for index = 1, 2 do
-        if not profs[index] then
-            self.charDb.profs[index - 1] = nil
+    local profIndex
+    for profIndex = 1, 2 do
+        if not profs[profIndex] then
+            self.charDb.profs[profIndex - 1] = nil
         else
-            local name, level = unpackByIndex({ GetProfessionInfo(profs[index]) }, 1, 3)
-            self.charDb.profs[index - 1] = { name = name, level = level }
+            local name, level = unpackByIndex({ GetProfessionInfo(profs[profIndex]) }, 1, 3)
+            self.charDb.profs[profIndex - 1] = { name = name, level = level }
         end
     end
 
@@ -352,6 +360,44 @@ function addon:ProcessOutbox()
     self:UpdateFrames('mail')
 
     self.outbox = nil
+end
+
+function addon:ScanInbox(deffered)
+    if self.scanInboxTimer then
+        self:CancelTimer(self.scanInboxTimer)
+        self.scanInboxTimer = nil
+    end
+
+    if deffered then
+        self.scanInboxTimer = self:ScheduleTimer(function()
+            self:ScanInbox()
+        end, 0.2)
+        return
+    end
+
+    local items = {}
+
+    local mailIndex
+    for mailIndex = 1, GetInboxNumItems() do
+        local itemIndex
+        for itemIndex = 1, ATTACHMENTS_MAX_RECEIVE do
+            local link = GetInboxItemLink(mailIndex, itemIndex)
+            if link then
+                local itemId = 0 + link:match('|Hitem:(%d+):')
+                local count = select(3, GetInboxItem(mailIndex, itemIndex))
+
+                if not items[itemId] then
+                    items[itemId] = { count = count }
+                else
+                    items[itemId].count = items[itemId] + count
+                end
+            end
+        end
+    end
+
+    self.charDb.items.mail = items
+
+    self:UpdateFrames('mail')
 end
 
 function addon:GetRealms()
