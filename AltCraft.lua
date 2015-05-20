@@ -137,7 +137,7 @@ end
 function addon:OnLogin()
     self.realm = GetRealmName()
     self.faction = string.lower(UnitFactionGroup('player'))
-    self.char = UnitFullName('player')
+    self.char = UnitName('player')
 
     self.realmDb = self.db.global.realms[self.realm]
     if not self.realmDb then
