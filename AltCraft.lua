@@ -349,9 +349,9 @@ function addon:ProcessOutbox()
         end
     end
 
-    self:UpdateFrames('mail')
-
     self.outbox = nil
+
+    self:UpdateFrames('mail')
 end
 
 function addon:GetRealms()
