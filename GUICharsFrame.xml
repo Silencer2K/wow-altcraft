@@ -269,6 +269,27 @@
                     ]]></OnClick>
                 </Scripts>
             </Button>
+            <Button name="$parentDeleteButton" inherits="UIPanelButtonTemplate" parentKey="DeleteButton" text="DELETE">
+                <Size x="80" y="22" />
+                <Anchors>
+                    <Anchor point="TOPRIGHT" relativeTo="$parentCharsScroll" relativePoint="BOTTOMRIGHT">
+                        <Offset>
+                            <AbsDimension x="21" y="-3" />
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Layers>
+                    <Layer level="BORDER">
+                        <Texture file="Interface\FrameGeneral\UI-Frame">
+                            <Size x="13" y="25" />
+                            <Anchors>
+                                <Anchor point="TOPRIGHT" relativePoint="TOPLEFT" x="5" y="1" />
+                            </Anchors>
+                            <TexCoords left="0.00781250" right="0.10937500" top="0.75781250" bottom="0.95312500" />
+                        </Texture>
+                    </Layer>
+                </Layers>
+            </Button>
         </Frames>
         <Scripts>
             <OnShow><![CDATA[
