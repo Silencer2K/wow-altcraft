@@ -135,8 +135,9 @@ function addon:UpdateFrames(what)
 end
 
 function addon:OnLogin()
-    self.char, self.realm = UnitFullName('player')
+    self.realm = GetRealmName()
     self.faction = string.lower(UnitFactionGroup('player'))
+    self.char = UnitFullName('player')
 
     self.realmDb = self.db.global.realms[self.realm]
     if not self.realmDb then
