@@ -94,6 +94,14 @@ function addon:OnInitialize()
         end
     end)
 
+    hooksecurefunc('SendMail', function(...)
+        self:ScanOutbox(...)
+    end)
+
+    self:RegisterEvent('MAIL_SEND_SUCCESS', function(...)
+        self:ProcessOutbox()
+    end)
+
     GameTooltip:HookScript('OnTooltipCleared', function(self)
         addon:OnGameTooltipCleared(self)
     end)
@@ -134,17 +142,20 @@ function addon:OnLogin()
     self.charDb = self.realmDb.chars[self.char]
     if not self.charDb then
         self.charDb = {
-            class = class,
-
             equip = {},
             bags = {},
             reagents = {},
             bank = {},
+            mail = {},
+
+            mailMoney = 0,
+            mailCOD = 0,
         }
 
         self.realmDb.chars[self.char] = self.charDb
     end
 
+    self.charDb.class = class
     self.charDb.level = UnitLevel('player')
     self.charDb.ilevel = select(2, GetAverageItemLevel())
     self.charDb.money = GetMoney()
@@ -178,9 +189,7 @@ function addon:ScanEquip(deffered)
 
         if itemId then
             if not items[itemId] then
-                items[itemId] = {
-                    count = count,
-                }
+                items[itemId] = { count = count }
             else
                 items[itemId].count = items[itemId].count + count
             end
@@ -204,9 +213,7 @@ function addon:ScanContainers(fromIndex, toIndex, items)
 
             if itemId then
                 if not items[itemId] then
-                    items[itemId] = {
-                        count = count,
-                    }
+                    items[itemId] = { count = count }
                 else
                     items[itemId].count = items[itemId].count + count
                 end
@@ -288,15 +295,59 @@ function addon:ScanProfs()
     self:UpdateFrames('profs')
 end
 
-function addon:GetChars(faction, realm)
-    faction = faction and string.lower(faction) or self.faction
-    realm = realm or self.realm
+function addon:ScanOutbox(rcpt, subject, body)
+    self.outbox = {
+        rcpt    = rcpt,
+        subject = subject,
+        body    = body,
 
-    if not self.db.global[faction] or not self.db.global[faction][realm] then
-        return {}
+        money   = GetSendMailMoney(),
+        cod     = GetSendMailCOD(),
+    }
+
+    local items = {}
+
+    local itemIndex
+    for itemIndex = 1, ATTACHMENTS_MAX_SEND do
+        local link = GetSendMailItemLink(itemIndex)
+        if link then
+            local itemId = 0 + link:match('|Hitem:(%d+):')
+            local count = select(3, GetSendMailItem(itemIndex))
+
+            if not items[itemId] then
+                items[itemId] = { count = count }
+            else
+                items[itemId].count = items[itemId].count + count
+            end
+        end
     end
 
-    return self.db.global[faction][realm].chars
+    self.outbox.items = items
+end
+
+function addon:ProcessOutbox()
+    local char, realm = strsplit('-', self.outbox.rcpt, 2)
+    local charDb = self:GetCharDb(char, realm)
+
+    if charDb then
+        charDb.mailMoney = (charDb.mailMoney or 0) + self.outbox.money
+        charDb.mailCOD   = (charDb.mailMOD   or 0) + self.outbox.cod
+
+        charDb.mail = charDb.mail or {}
+
+        local itemId, itemData
+        for itemId, itemData in pairs(self.outbox.items) do
+            if not charDb.mail[itemId] then
+                charDb.mail[itemId] = { count = itemData.count }
+            else
+                charDb.mail[itemId].count = charDb.mail[itemId].count + itemData.count
+            end
+        end
+    end
+
+    self:UpdateFrames('mail')
+
+    self.outbox = nil
 end
 
 function addon:GetRealms()
@@ -315,6 +366,42 @@ function addon:GetRealms()
     table.sort(list)
 
     return list
+end
+
+function addon:GetChars(faction, realm)
+    faction = faction and string.lower(faction) or self.faction
+    realm = realm or self.realm
+
+    if not self.db.global[faction] or not self.db.global[faction][realm] then
+        return {}
+    end
+
+    return self.db.global[faction][realm].chars
+end
+
+function addon:GetCharDb(char, realm, faction)
+    if not faction then
+        return self:GetCharDb(char, realm, self.faction) or
+            self:GetCharDb(char, realm, self.faction == 'alliance' and 'horde' or 'alliance')
+    end
+
+    char = char:lower()
+
+    realm = realm or self.realm
+    realm = realm:gsub('[- ]', ''):lower()
+
+    if self.db.global[faction] then
+        local tryRealm, tryChar
+        for tryRealm in pairs(self.db.global[faction]) do
+            if tryRealm:lower() == realm then
+                for tryChar in pairs(self.db.global[faction][tryRealm].chars) do
+                    if tryChar:lower() == char then
+                        return self.db.global[faction][tryRealm].chars[tryChar], tryChar, tryRealm, faction
+                    end
+                end
+            end
+        end
+    end
 end
 
 function addon:GetFactionColor(faction)
@@ -336,56 +423,52 @@ function addon:OnGameTooltipSetItem(tooltip)
         local _, link = tooltip:GetItem()
 
         if link then
-            local itemId = link:match('|Hitem:(%d+):')
+            local itemId = 0 + link:match('|Hitem:(%d+):')
 
-            if itemId then
-                itemId = 0 + itemId
+            tooltip:AddLine(' ')
 
-                tooltip:AddLine(' ')
+            local total = 0
 
-                local total = 0
+            local char, charDb
+            for char, charDb in pairs(self.realmDb.chars) do
+                local count, desc = 0
 
-                local char, charDb
-                for char, charDb in pairs(self.realmDb.chars) do
-                    local count, desc = 0
-
-                    local source, sourceDb
-                    for source, sourceDb in pairs({ equip = charDb.equip, bags = charDb.bags, reagents = charDb.reagents, bank = charDb.bank }) do
-                        if sourceDb[itemId] then
-                            count = count + sourceDb[itemId].count
-                            desc = (desc and (desc .. ', ') or '') .. string.format(
-                                '|c%s%s:|r |c%s%d|r',
-                                COLOR_TOOLTIP_SOURCE,
-                                L['tooltip_' .. source],
-                                COLOR_TOOLTIP_COUNT,
-                                sourceDb[itemId].count
-                            )
-                        end
-                    end
-
-                    if count > 0 then
-                        tooltip:AddDoubleLine(string.format(
-                            '|c%s%s|r',
-                            RAID_CLASS_COLORS[charDb.class].colorStr,
-                            char
-                        ), string.format(
-                            '|c%s%d|r (%s)',
+                local source, sourceDb
+                for source, sourceDb in pairs({ equip = charDb.equip, bags = charDb.bags, reagents = charDb.reagents, bank = charDb.bank, mail = charDb.mail or {} }) do
+                    if sourceDb[itemId] then
+                        count = count + sourceDb[itemId].count
+                        desc = (desc and (desc .. ', ') or '') .. string.format(
+                            '|c%s%s:|r |c%s%d|r',
+                            COLOR_TOOLTIP_SOURCE,
+                            L['tooltip_' .. source],
                             COLOR_TOOLTIP_COUNT,
-                            count,
-                            desc
-                        ), unpack(COLOR_TOOLTIP_2L))
+                            sourceDb[itemId].count
+                        )
                     end
-
-                    total = total + count
                 end
 
-                tooltip:AddLine(string.format(
-                    '%s: |c%s%d|r',
-                    L.tooltip_total,
-                    COLOR_TOOLTIP_COUNT,
-                    total
-                ), unpack(COLOR_TOOLTIP))
+                if count > 0 then
+                    tooltip:AddDoubleLine(string.format(
+                        '|c%s%s|r',
+                        RAID_CLASS_COLORS[charDb.class].colorStr,
+                        char
+                    ), string.format(
+                        '|c%s%d|r (%s)',
+                        COLOR_TOOLTIP_COUNT,
+                        count,
+                        desc
+                    ), unpack(COLOR_TOOLTIP_2L))
+                end
+
+                total = total + count
             end
+
+            tooltip:AddLine(string.format(
+                '%s: |c%s%d|r',
+                L.tooltip_total,
+                COLOR_TOOLTIP_COUNT,
+                total
+            ), unpack(COLOR_TOOLTIP))
         end
     end
 end
