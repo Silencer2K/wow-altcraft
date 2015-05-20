@@ -174,9 +174,9 @@ function frame:UpdateSort()
             _G[button:GetName() .. 'Arrow']:Show()
 
             if self.sortReverse then
-                _G[button:GetName()..'Arrow']:SetTexCoord(0, 0.5625, 1.0, 0);
+                _G[button:GetName() .. 'Arrow']:SetTexCoord(0, 0.5625, 1, 0);
             else
-                _G[button:GetName()..'Arrow']:SetTexCoord(0, 0.5625, 0, 1.0);
+                _G[button:GetName() .. 'Arrow']:SetTexCoord(0, 0.5625, 0, 1);
             end
         else
             _G[button:GetName() .. 'Arrow']:Hide()
@@ -218,7 +218,7 @@ function frame.CharsScroll:Update()
                 RAID_CLASS_COLORS[char.data.class].g, RAID_CLASS_COLORS[char.data.class].b)
 
             button.Level:SetText(char.data.level)
-            button.ILevel:SetText(math.floor(char.data.ilevel or 0))
+            button.ILevel:SetText(math.floor(char.data.ilevel))
 
             button.Money:SetText(GetCoinTextureString(char.data.money, 10))
 
