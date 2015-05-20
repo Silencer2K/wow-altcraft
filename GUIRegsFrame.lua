@@ -2,7 +2,9 @@ local addonName, addon = ...
 
 local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
 
-local frame = AltCraftFrameTab2Frame
+local frame = AltCraftFrameReagentsTabFrame
+
+table.insert(ALTCRAFT_TABS, { frame = frame, label = L.tab_reagents })
 
 function frame:OnInitialize()
     self.Title:SetText(L.tab_reagents_title)

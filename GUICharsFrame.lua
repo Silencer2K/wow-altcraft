@@ -4,7 +4,9 @@ local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
 
 local CHAR_SCROLL_ITEM_HEIGHT = 20
 
-local frame = AltCraftFrameTab1Frame
+local frame = AltCraftFrameCharsTabFrame
+
+table.insert(ALTCRAFT_TABS, { frame = frame, label = L.tab_chars })
 
 function frame:OnInitialize()
     self.Title:SetText(L.tab_chars_title)
@@ -131,7 +133,7 @@ function frame:GetSortedChars()
 
     local name, data
     for name, data in pairs(addon:GetChars(self.selectedFaction, self.selectedRealm)) do
-        tinsert(list, { name = name, data = data })
+        table.insert(list, { name = name, data = data })
     end
 
     local column = self.sortColumn or 'name'

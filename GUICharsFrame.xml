@@ -72,7 +72,7 @@
         </Layers>
         <HighlightTexture file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar" alphaMode="ADD" setAllPoints="true" />
     </Button>
-    <Frame name="AltCraftFrameTab1Frame" parent="AltCraftFrame" parentKey="Tab1Frame" hidden="true">
+    <Frame name="AltCraftFrameCharsTabFrame" parent="AltCraftFrame" parentKey="CharsTabFrame" hidden="true">
         <Size x="768" y="447" />
         <Anchors>
             <Anchor point="TOPLEFT" />

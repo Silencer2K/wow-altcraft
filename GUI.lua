@@ -2,22 +2,34 @@ local addonName, addon = ...
 
 local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
 
-local FRAME_TABS = 2
+ALTCRAFT_TABS = {}
 
 local frame = AltCraftFrame
 
 function frame:OnInitialize()
-    tinsert(UISpecialFrames, self:GetName())
+    table.insert(UISpecialFrames, self:GetName())
 
-    -- Chars Tab
-    self.Tab1:SetText(L.tab_chars)
-    self.Tab1Frame:OnInitialize()
+    local i
+    for i = 1, #ALTCRAFT_TABS do
+        local button = CreateFrame('Button', self:GetName() .. 'Tab' .. i, self, 'CharacterFrameTabButtonTemplate')
 
-    -- Reagents Tab
-    self.Tab2:SetText(L.tab_reagents)
-    self.Tab2Frame:OnInitialize()
+        if i == 1 then
+            button:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 27, 13)
+        else
+            button:SetPoint('TOPLEFT', _G[self:GetName() .. 'Tab' .. (i - 1)], 'TOPRIGHT', -15, 0)
+        end
 
-    PanelTemplates_SetNumTabs(self, FRAME_TABS)
+        button:SetID(i)
+        button:SetText(ALTCRAFT_TABS[i].label)
+
+        button:SetScript('OnClick', function()
+            self:OnSelectTab(i)
+        end)
+
+        ALTCRAFT_TABS[i].frame:OnInitialize()
+    end
+
+    PanelTemplates_SetNumTabs(self, #ALTCRAFT_TABS)
     self:OnSelectTab(1)
 end
 
@@ -25,11 +37,11 @@ function frame:OnSelectTab(index)
     PanelTemplates_SetTab(self, index)
 
     local i
-    for i = 1, FRAME_TABS do
+    for i = 1, #ALTCRAFT_TABS do
         if index == i then
-            self['Tab' .. i .. 'Frame']:Show()
+            ALTCRAFT_TABS[i].frame:Show()
         else
-            self['Tab' .. i .. 'Frame']:Hide()
+            ALTCRAFT_TABS[i].frame:Hide()
         end
     end
 end
