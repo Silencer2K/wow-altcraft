@@ -80,7 +80,7 @@ function frame:UpdateSelectRealm()
             info.text = string.format(
                 '%s (%d)',
                 realm,
-                tableLength(addon:GetChars('alliance', realm)) + tableLength(addon:GetChars('horde', realm))
+                tableLength(addon:GetChars(realm, 'alliance')) + tableLength(addon:GetChars(realm, 'horde'))
             )
 
             UIDropDownMenu_AddButton(info)
@@ -114,7 +114,7 @@ function frame:UpdateSelectFaction()
                 '|c%s%s (%d)|r',
                 addon:GetFactionColor(faction),
                 _G['FACTION_' .. faction:upper()],
-                tableLength(addon:GetChars(faction, self.selectedRealm))
+                tableLength(addon:GetChars(self.selectedRealm, faction))
             )
 
             UIDropDownMenu_AddButton(info)
@@ -132,7 +132,7 @@ function frame:GetSortedChars()
     local list = {}
 
     local name, data
-    for name, data in pairs(addon:GetChars(self.selectedFaction, self.selectedRealm)) do
+    for name, data in pairs(addon:GetChars(self.selectedRealm, self.selectedFaction)) do
         table.insert(list, { name = name, data = data })
     end
 
@@ -224,9 +224,9 @@ function frame.CharsScroll:Update()
 
             local profIndex
             for profIndex = 1, 2 do
-                if char.data['prof' .. profIndex] then
+                if char.data.profs[profIndex - 1] then
                     button['Prof' .. profIndex]:SetText(string.format('%s [%d]',
-                        char.data['prof' .. profIndex], char.data['prof' .. profIndex .. 'level']))
+                        char.data.profs[profIndex - 1].name, char.data.profs[profIndex - 1].level))
                 else
                     button['Prof' .. profIndex]:SetText('')
                 end
