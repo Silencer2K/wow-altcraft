@@ -18,5 +18,10 @@
                 </FontString>
             </Layer>
         </Layers>
+        <Scripts>
+            <OnShow><![CDATA[
+                self:OnShow()
+            ]]></OnShow>
+        </Scripts>
     </Frame>
 </Ui>
