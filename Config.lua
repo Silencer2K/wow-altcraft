@@ -14,8 +14,7 @@ function addon:GetDefaults()
             },
         },
         global = {
-            alliance = {},
-            horde = {},
+            realms = {},
         },
     }
 end

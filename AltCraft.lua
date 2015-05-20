@@ -18,10 +18,12 @@ function addon:OnInitialize()
         type = 'launcher',
         icon = 'Interface\\ICONS\\INV_Gizmo_KhoriumPowerCore',
         label = "AltCraft",
+
         OnTooltipShow = function(tooltip)
             tooltip:AddLine(addonName)
             tooltip:AddLine(L.icon_tooltip, unpack(COLOR_ICON_TOOLTIP))
         end,
+
         OnClick = function(obj, button)
             if button == 'RightButton' then
                 InterfaceOptionsFrame_OpenToCategory(addonName)
@@ -128,35 +130,39 @@ function addon:OnLogin()
     self.char, self.realm = UnitFullName('player')
     self.faction = string.lower(UnitFactionGroup('player'))
 
-    self.realmDb = self.db.global[self.faction][self.realm]
+    self.realmDb = self.db.global.realms[self.realm]
     if not self.realmDb then
         self.realmDb = {
             chars = {},
         }
 
-        self.db.global[self.faction][self.realm] = self.realmDb
+        self.db.global.realms[self.realm] = self.realmDb
     end
 
-    local _, class = UnitClass('player')
+    local class = select(2, UnitClass('player'))
+    local level = UnitLevel('player')
 
     self.charDb = self.realmDb.chars[self.char]
-    if not self.charDb then
+    if not self.charDb or self.charDb.faction ~= self.faction or self.charDb.class ~= class or self.charDb.level > level then
         self.charDb = {
-            equip = {},
-            bags = {},
-            reagents = {},
-            bank = {},
-            mail = {},
+            faction = self.faction,
+            class = class,
 
-            mailMoney = 0,
-            mailCOD = 0,
+            items = {
+                equip    = {},
+                bags     = {},
+                reagents = {},
+                bank     = {},
+                mail     = {},
+            },
+
+            profs = {},
         }
 
         self.realmDb.chars[self.char] = self.charDb
     end
 
-    self.charDb.class = class
-    self.charDb.level = UnitLevel('player')
+    self.charDb.level = level
     self.charDb.ilevel = select(2, GetAverageItemLevel())
     self.charDb.money = GetMoney()
 
@@ -196,7 +202,7 @@ function addon:ScanEquip(deffered)
         end
     end
 
-    self.charDb.equip = items
+    self.charDb.items.equip = items
 
     self:UpdateFrames('equip')
 end
@@ -209,7 +215,7 @@ function addon:ScanContainers(fromIndex, toIndex, items)
         local itemIndex
         for itemIndex = 1, GetContainerNumSlots(bagIndex) do
             local itemId = GetContainerItemID(bagIndex, itemIndex)
-            local _, count = GetContainerItemInfo(bagIndex, itemIndex)
+            local count = select(2, GetContainerItemInfo(bagIndex, itemIndex))
 
             if itemId then
                 if not items[itemId] then
@@ -237,7 +243,7 @@ function addon:ScanBags(deffered)
         return
     end
 
-    self.charDb.bags = self:ScanContainers(BACKPACK_CONTAINER, NUM_BAG_SLOTS)
+    self.charDb.items.bags = self:ScanContainers(BACKPACK_CONTAINER, NUM_BAG_SLOTS)
 
     self:UpdateFrames('bags')
 end
@@ -255,7 +261,7 @@ function addon:ScanReagents(deffered)
         return
     end
 
-    self.charDb.reagents = self:ScanContainers(REAGENTBANK_CONTAINER, REAGENTBANK_CONTAINER)
+    self.charDb.items.reagents = self:ScanContainers(REAGENTBANK_CONTAINER, REAGENTBANK_CONTAINER)
 
     self:UpdateFrames('reagents')
 end
@@ -273,7 +279,7 @@ function addon:ScanBank(deffered)
         return
     end
 
-    self.charDb.bank = self:ScanContainers(NUM_BAG_SLOTS + 1, NUM_BAG_SLOTS + NUM_BANKBAGSLOTS,
+    self.charDb.items.bank = self:ScanContainers(NUM_BAG_SLOTS + 1, NUM_BAG_SLOTS + NUM_BANKBAGSLOTS,
         self:ScanContainers(BANK_CONTAINER, BANK_CONTAINER)
     )
 
@@ -286,9 +292,10 @@ function addon:ScanProfs()
     local index
     for index = 1, 2 do
         if not profs[index] then
-            self.charDb['prof' .. index], self.charDb['prof' .. index .. 'level'] = nil, nil
+            self.charDb.profs[index - 1] = nil
         else
-            self.charDb['prof' .. index], self.charDb['prof' .. index .. 'level'] = unpackByIndex({ GetProfessionInfo(profs[index]) }, 1, 3)
+            local name, level = unpackByIndex({ GetProfessionInfo(profs[index]) }, 1, 3)
+            self.charDb.profs[index - 1] = { name = name, level = level }
         end
     end
 
@@ -330,17 +337,14 @@ function addon:ProcessOutbox()
     local charDb = self:GetCharDb(char, realm)
 
     if charDb then
-        charDb.mailMoney = (charDb.mailMoney or 0) + self.outbox.money
-        charDb.mailCOD   = (charDb.mailMOD   or 0) + self.outbox.cod
-
-        charDb.mail = charDb.mail or {}
+        local items = charDb.items.mail
 
         local itemId, itemData
         for itemId, itemData in pairs(self.outbox.items) do
-            if not charDb.mail[itemId] then
-                charDb.mail[itemId] = { count = itemData.count }
+            if not items[itemId] then
+                items[itemId] = { count = itemData.count }
             else
-                charDb.mail[itemId].count = charDb.mail[itemId].count + itemData.count
+                items[itemId].count = items[itemId].count + itemData.count
             end
         end
     end
@@ -351,15 +355,11 @@ function addon:ProcessOutbox()
 end
 
 function addon:GetRealms()
-    local list, added = {}, {}
+    local list = {}
 
-    local faction, realm
-    for faction in valuesIterator({ 'alliance', 'horde' }) do
-        for realm in pairs(self.db.global[faction]) do
-            if not tableIsEmpty(self.db.global[faction][realm]) and not added[realm] then
-                added[realm] = 1
-                table.insert(list, realm)
-            end
+    for realm in pairs(self.db.global.realms) do
+        if not tableIsEmpty(self.db.global.realms[realm]) then
+            table.insert(list, realm)
         end
     end
 
@@ -368,36 +368,38 @@ function addon:GetRealms()
     return list
 end
 
-function addon:GetChars(faction, realm)
-    faction = faction and string.lower(faction) or self.faction
+function addon:GetChars(realm, faction)
     realm = realm or self.realm
+    faction = faction and string.lower(faction) or self.faction
 
-    if not self.db.global[faction] or not self.db.global[faction][realm] then
-        return {}
+    local list = {}
+
+    if self.db.global.realms[realm] then
+        local char, charDb
+        for char, charDb in pairs(self.db.global.realms[realm].chars) do
+            if faction == charDb.faction then
+                list[char] = charDb
+            end
+        end
     end
 
-    return self.db.global[faction][realm].chars
+    return list
 end
 
-function addon:GetCharDb(char, realm, faction)
-    if not faction then
-        return self:GetCharDb(char, realm, self.faction) or
-            self:GetCharDb(char, realm, self.faction == 'alliance' and 'horde' or 'alliance')
-    end
-
+function addon:GetCharDb(char, realm)
     char = char:lower()
 
     realm = realm or self.realm
     realm = realm:gsub('[- ]', ''):lower()
 
-    if self.db.global[faction] then
-        local tryRealm, tryChar
-        for tryRealm in pairs(self.db.global[faction]) do
-            if tryRealm:lower() == realm then
-                for tryChar in pairs(self.db.global[faction][tryRealm].chars) do
-                    if tryChar:lower() == char then
-                        return self.db.global[faction][tryRealm].chars[tryChar], tryChar, tryRealm, faction
-                    end
+    local tryRealm, realmDb
+    for tryRealm, realmDb in pairs(self.db.global.realms) do
+        if tryRealm:lower() == realm then
+            local tryChar, charDb
+
+            for tryChar, charDb in pairs(realmDb.chars) do
+                if tryChar:lower() == char then
+                    return charDb, tryChar, tryRealm
                 end
             end
         end
@@ -420,21 +422,21 @@ function addon:OnGameTooltipSetItem(tooltip)
     local disabled = false;--_G['Altoholic'] or false
 
     if not disabled then
-        local _, link = tooltip:GetItem()
+        local link = select(2, tooltip:GetItem())
 
         if link then
             local itemId = 0 + link:match('|Hitem:(%d+):')
+            local total = 0
 
             tooltip:AddLine(' ')
 
-            local total = 0
-
             local char, charDb
-            for char, charDb in pairs(self.realmDb.chars) do
+            for char, charDb in pairs(self:GetChars()) do
                 local count, desc = 0
 
-                local source, sourceDb
-                for source, sourceDb in pairs({ equip = charDb.equip, bags = charDb.bags, reagents = charDb.reagents, bank = charDb.bank, mail = charDb.mail or {} }) do
+                local source
+                for source in valuesIterator({ 'equip', 'bags', 'reagents', 'bank', 'mail' }) do
+                    local sourceDb = charDb.items[source]
                     if sourceDb[itemId] then
                         count = count + sourceDb[itemId].count
                         desc = (desc and (desc .. ', ') or '') .. string.format(
