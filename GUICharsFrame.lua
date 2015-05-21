@@ -2,6 +2,38 @@ local addonName, addon = ...
 
 local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
 
+local RACE_ICON_TCOORDS = {
+    HUMAN_MALE      = { 0, 0.125, 0, 0.25 },
+    DWARF_MALE      = { 0.125, 0.25, 0, 0.25 },
+    GNOME_MALE      = { 0.25, 0.375, 0, 0.25 },
+    NIGHTELF_MALE   = { 0.375, 0.5, 0, 0.25 },
+    DRAENEI_MALE    = { 0.5, 0.625, 0, 0.25 },
+    WORGEN_MALE     = { 0.625, 0.75, 0, 0.25 },
+    PANDAREN_MALE   = { 0.75, 0.875, 0, 0.25 },
+
+    TAUREN_MALE     = { 0, 0.125, 0.25, 0.5 },
+    SCOURGE_MALE    = { 0.125, 0.25, 0.25, 0.5 },
+    TROLL_MALE      = { 0.25, 0.375, 0.25, 0.5 },
+    ORC_MALE        = { 0.375, 0.5, 0.25, 0.5 },
+    BLOODELF_MALE   = { 0.5, 0.625, 0.25, 0.5 },
+    GOBLIN_MALE     = { 0.625, 0.75, 0.25, 0.5 },
+
+    HUMAN_FEMALE    = { 0, 0.125, 0.5, 0.75 },
+    DWARF_FEMALE    = { 0.125, 0.25, 0.5, 0.75 },
+    GNOME_FEMALE    = { 0.25, 0.375, 0.5, 0.75 },
+    NIGHTELF_FEMALE = { 0.375, 0.5, 0.5, 0.75 },
+    DRAENEI_FEMALE  = { 0.5, 0.625, 0.5, 0.75 },
+    WORGEN_FEMALE   = { 0.625, 0.75, 0.5, 0.75 },
+    PANDAREN_FEMALE = { 0.75, 0.875, 0.5, 0.75 },
+
+    TAUREN_FEMALE   = { 0, 0.125, 0.75, 1 },
+    SCOURGE_FEMALE  = { 0.125, 0.25, 0.75, 1 },
+    TROLL_FEMALE    = { 0.25, 0.375, 0.75, 1 },
+    ORC_FEMALE      = { 0.375, 0.5, 0.75, 1 },
+    BLOODELF_FEMALE = { 0.5, 0.625, 0.75, 1 },
+    GOBLIN_FEMALE   = { 0.625, 0.75, 0.75, 1 },
+}
+
 local CHAR_SCROLL_ITEM_HEIGHT = 20
 
 local frame = AltCraftFrameCharsTabFrame
@@ -57,7 +89,11 @@ function frame:OnSelectSort(column, reverse)
 end
 
 function frame:OnSelectChar(button)
-    self.selectedChar = button.data.name
+    if self.selectedChar and self.selectedChar == button.data.name then
+        self.selectedChar = nil
+    else
+        self.selectedChar = button.data.name
+    end
     self:Update()
 end
 
@@ -251,8 +287,8 @@ function frame.CharsScroll:Update()
 
             button:Show()
 
-            button.ClassIcon:SetTexture('Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes')
             button.ClassIcon:SetTexCoord(unpack(CLASS_ICON_TCOORDS[char.data.class]))
+            button.RaceIcon:SetTexCoord(unpack(RACE_ICON_TCOORDS[char.data.race:upper() .. '_' .. (char.data.gender == 1 and 'MALE' or 'FEMALE')]))
 
             button.Name:SetText(char.name)
             button.Name:SetTextColor(RAID_CLASS_COLORS[char.data.class].r,

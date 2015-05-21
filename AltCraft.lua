@@ -148,14 +148,18 @@ function addon:OnLogin()
         self.db.global.realms[self.realm] = self.realmDb
     end
 
-    local class = select(2, UnitClass('player'))
-    local level = UnitLevel('player')
+    local class  = select(2, UnitClass('player'))
+    local race   = select(2, UnitRace('player'))
+    local gender = UnitSex('player')
+    local level  = UnitLevel('player')
 
     self.charDb = self.realmDb.chars[self.char]
     if not self.charDb or self.charDb.faction ~= self.faction or self.charDb.class ~= class or self.charDb.level > level then
         self.charDb = {
             faction = self.faction,
-            class = class,
+            class   = class,
+            race    = race,
+            gender  = gender,
 
             items = {
                 equip    = {},

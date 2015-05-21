@@ -11,7 +11,7 @@
                 </Texture>
             </Layer>
             <Layer level="ARTWORK">
-                <Texture name="$parentClassIcon" file="Interface\Glues\CharacterCreate\UI-CharacterCreate-Classes" parentKey="ClassIcon">
+                <Texture name="$parentRaceIcon" file="Interface\Glues\CharacterCreate\UI-CharacterCreate-Races" parentKey="RaceIcon">
                     <Anchors>
                         <Anchor point="LEFT" x="5" y="0" />
                     </Anchors>
@@ -20,9 +20,18 @@
                     </Size>
                     <TexCoords left="0" right="0.25" top="0" bottom="0.25" />
                 </Texture>
+                <Texture name="$parentClassIcon" file="Interface\Glues\CharacterCreate\UI-CharacterCreate-Classes" parentKey="ClassIcon">
+                    <Anchors>
+                        <Anchor point="LEFT" x="2" y="0" relativeTo="$parentRaceIcon" relativePoint="RIGHT" />
+                    </Anchors>
+                    <Size>
+                        <AbsDimension x="16" y="16" />
+                    </Size>
+                    <TexCoords left="0" right="0.25" top="0" bottom="0.25" />
+                </Texture>
                 <FontString name="$parentName" inherits="GameFontHighlightSmall" justifyH="LEFT" wordwrap="false" parentKey="Name">
                     <Size>
-                        <AbsDimension x="128" y="10" />
+                        <AbsDimension x="110" y="10" />
                     </Size>
                     <Anchors>
                         <Anchor point="LEFT" x="5" y="0" relativeTo="$parentClassIcon" relativePoint="RIGHT" />
