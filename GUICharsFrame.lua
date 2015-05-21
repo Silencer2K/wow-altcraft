@@ -129,7 +129,7 @@ function frame:UpdateSelectRealm()
             info.text = string.format(
                 '%s (%d)',
                 realm,
-                tableLength(addon:GetChars(realm, 'alliance')) + tableLength(addon:GetChars(realm, 'horde'))
+                tableLength(addon:GetChars(realm, 'ALLIANCE')) + tableLength(addon:GetChars(realm, 'HORDE'))
             )
 
             UIDropDownMenu_AddButton(info)
@@ -161,7 +161,7 @@ function frame:UpdateSelectFaction()
         local selectedFaction = self.selectedFaction or addon.faction
 
         local faction
-        for faction in valuesIterator({ 'alliance', 'horde' }) do
+        for faction in valuesIterator({ 'ALLIANCE', 'HORDE' }) do
             info.value = faction
             info.text = string.format(
                 '|c%s%s (%d)|r',
@@ -290,7 +290,7 @@ function frame.CharsScroll:Update()
             button:Show()
 
             button.ClassIcon:SetTexCoord(unpack(CLASS_ICON_TCOORDS[char.data.class]))
-            button.RaceIcon:SetTexCoord(unpack(RACE_ICON_TCOORDS[char.data.race .. (char.data.race == 'PANDAREN' and char.data.faction == 'horde' and '2' or '') .. '_' .. char.data.gender]))
+            button.RaceIcon:SetTexCoord(unpack(RACE_ICON_TCOORDS[char.data.race .. (char.data.race == 'PANDAREN' and char.data.faction == 'HORDE' and '2' or '') .. '_' .. char.data.gender]))
 
             button.Name:SetText(char.name)
             button.Name:SetTextColor(RAID_CLASS_COLORS[char.data.class].r,

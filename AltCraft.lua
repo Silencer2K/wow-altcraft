@@ -4,7 +4,7 @@ LibStub('AceAddon-3.0'):NewAddon(addon, addonName, 'AceEvent-3.0', 'AceTimer-3.0
 
 local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
 
-local VERSION = 2
+local VERSION = 3
 
 local COLOR_TOOLTIP         = { 1.0, 1.0, 1.0 }
 local COLOR_TOOLTIP_2L      = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 }
@@ -35,7 +35,7 @@ function addon:OnInitialize()
             if button == 'RightButton' then
                 InterfaceOptionsFrame_OpenToCategory(addonName)
             else
-                if AltCraftFrame:IsShown() and AltCraftFrame.CharsTabFrame:IsShown() then
+                if AltCraftFrame:IsShown() then
                     AltCraftFrame:Hide()
                 else
                     AltCraftFrame:Show()
@@ -143,7 +143,7 @@ end
 
 function addon:OnLogin()
     self.realm = GetRealmName()
-    self.faction = string.lower(UnitFactionGroup('player'))
+    self.faction = string.upper(UnitFactionGroup('player'))
     self.char = UnitName('player')
 
     self.realmDb = self.db.global.realms[self.realm]
@@ -165,7 +165,7 @@ function addon:OnLogin()
     local level  = UnitLevel('player')
 
     self.charDb = self.realmDb.chars[self.char]
-    if not self.charDb or self.charDb.faction ~= self.faction or self.charDb.class ~= class or self.charDb.level > level then
+    if not self.charDb or self.faction ~= self.charDb.faction or class ~= self.charDb.class or level < self.charDb.level then
         self.charDb = {
             faction = self.faction,
             class   = class,
@@ -432,7 +432,7 @@ end
 
 function addon:GetChars(realm, faction)
     realm = realm or self.realm
-    faction = faction and string.lower(faction) or self.faction
+    faction = faction and faction:upper() or self.faction
 
     local list = {}
 
@@ -456,11 +456,11 @@ function addon:GetCharDb(char, realm)
 
     local tryRealm, realmDb
     for tryRealm, realmDb in pairs(self.db.global.realms) do
-        if tryRealm:lower() == realm then
+        if realm == tryRealm:gsub('[- ]', ''):lower() then
             local tryChar, charDb
 
             for tryChar, charDb in pairs(realmDb.chars) do
-                if tryChar:lower() == char then
+                if char == tryChar:lower() then
                     return charDb, tryChar, tryRealm
                 end
             end
@@ -469,9 +469,9 @@ function addon:GetCharDb(char, realm)
 end
 
 function addon:GetFactionColor(faction)
-    faction = faction and string.lower(faction) or self.faction
+    faction = faction and faction:upper() or self.faction
 
-    local ids = { horde = 0, alliance = 1 }
+    local ids = { HORDE = 0, ALLIANCE = 1 }
     local color = PLAYER_FACTION_COLORS[ids[faction]]
 
     return string.format("ff%02x%02x%02x", color.r * 255, color.g * 255, color.b * 255)
