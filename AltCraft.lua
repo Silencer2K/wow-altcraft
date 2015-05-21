@@ -390,7 +390,7 @@ function addon:ScanInbox(deffered)
                 if not items[itemId] then
                     items[itemId] = { count = count }
                 else
-                    items[itemId].count = items[itemId] + count
+                    items[itemId].count = items[itemId].count + count
                 end
             end
         end
