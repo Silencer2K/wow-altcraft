@@ -16,7 +16,7 @@ local COLOR_TOOLTIP_COUNT   = 'ffffff00'
 function addon:OnInitialize()
     self.db = LibStub('AceDB-3.0'):New(addonName .. 'DB', self:GetDefaults(), true)
 
-    if not self.db.global.version or self.db.global.version ~= VERSION then
+    if self.db.global.version ~= VERSION then
         self.db.global.version = VERSION
         self.db.global.realms = {}
     end
