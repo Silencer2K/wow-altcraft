@@ -165,7 +165,7 @@ function addon:OnLogin()
     local level  = UnitLevel('player')
 
     self.charDb = self.realmDb.chars[self.char]
-    if not self.charDb or self.faction ~= self.charDb.faction or class ~= self.charDb.class or level < self.charDb.level then
+    if not self.charDb or class ~= self.charDb.class or level < self.charDb.level then
         self.charDb = {
             faction = self.faction,
             class   = class,
