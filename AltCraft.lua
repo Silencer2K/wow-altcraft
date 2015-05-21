@@ -35,7 +35,7 @@ function addon:OnInitialize()
             if button == 'RightButton' then
                 InterfaceOptionsFrame_OpenToCategory(addonName)
             else
-                if AltCraftFrame:IsShown() then
+                if AltCraftFrame:IsShown() and AltCraftFrame.CharsTabFrame:IsShown() then
                     AltCraftFrame:Hide()
                 else
                     AltCraftFrame:Show()
