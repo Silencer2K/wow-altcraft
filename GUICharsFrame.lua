@@ -288,7 +288,7 @@ function frame.CharsScroll:Update()
             button:Show()
 
             button.ClassIcon:SetTexCoord(unpack(CLASS_ICON_TCOORDS[char.data.class]))
-            button.RaceIcon:SetTexCoord(unpack(RACE_ICON_TCOORDS[char.data.race:upper() .. '_' .. (char.data.gender == 1 and 'MALE' or 'FEMALE')]))
+            button.RaceIcon:SetTexCoord(unpack(RACE_ICON_TCOORDS[char.data.race:upper() .. '_' .. (char.data.gender == 2 and 'MALE' or 'FEMALE')]))
 
             button.Name:SetText(char.name)
             button.Name:SetTextColor(RAID_CLASS_COLORS[char.data.class].r,
