@@ -56,6 +56,11 @@ function frame:OnSelectSort(column, reverse)
     self:Update()
 end
 
+function frame:OnSelectChar(button)
+    self.selectedChar = button.data.name
+    self:Update()
+end
+
 function frame:Update()
     self:UpdateSelectRealm()
     self:UpdateSelectFaction()
@@ -69,6 +74,10 @@ function frame:UpdateSelectRealm()
 
         info.func = function(button)
             UIDropDownMenu_SetSelectedValue(self.SelectRealm, button.value)
+
+            if self.selectedRealm ~= button.value then
+                self.selectedChar = nil
+            end
 
             self.selectedRealm = button.value
             self:Update()
@@ -102,6 +111,10 @@ function frame:UpdateSelectFaction()
 
         info.func = function(button)
             UIDropDownMenu_SetSelectedValue(self.SelectFaction, button.value)
+
+            if self.selectedRealm ~= button.value then
+                self.selectedChar = nil
+            end
 
             self.selectedFaction = button.value
             self:Update()
@@ -234,6 +247,8 @@ function frame.CharsScroll:Update()
         local char = chars[i + scrollOffset]
 
         if scrollOffset + i <= numRows then
+            button.data = char
+
             button:Show()
 
             button.ClassIcon:SetTexture('Interface\\Glues\\CharacterCreate\\UI-CharacterCreate-Classes')
@@ -257,6 +272,12 @@ function frame.CharsScroll:Update()
                     button['Prof' .. profIndex]:SetText('')
                     button['Prof' .. profIndex .. 'Level']:SetText('')
                 end
+            end
+
+            if self:GetParent().selectedChar == char.name then
+                button:LockHighlight()
+            else
+                button:UnlockHighlight()
             end
         else
             button:Hide()

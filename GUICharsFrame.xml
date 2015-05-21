@@ -87,6 +87,11 @@
             </Layer>
         </Layers>
         <HighlightTexture file="Interface\FriendsFrame\UI-FriendsFrame-HighlightBar" alphaMode="ADD" setAllPoints="true" />
+        <Scripts>
+            <OnClick><![CDATA[
+                self:GetParent():GetParent():GetParent():OnSelectChar(self)
+            ]]></OnClick>
+        </Scripts>
     </Button>
     <Frame name="AltCraftFrameCharsTabFrame" parent="AltCraftFrame" parentKey="CharsTabFrame" hidden="true">
         <Size x="768" y="447" />
