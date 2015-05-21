@@ -4,7 +4,7 @@ LibStub('AceAddon-3.0'):NewAddon(addon, addonName, 'AceEvent-3.0', 'AceTimer-3.0
 
 local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
 
-local VERSION = 1
+local VERSION = 2
 
 local COLOR_TOOLTIP         = { 1.0, 1.0, 1.0 }
 local COLOR_TOOLTIP_2L      = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 }
@@ -155,9 +155,13 @@ function addon:OnLogin()
         self.db.global.realms[self.realm] = self.realmDb
     end
 
-    local class  = select(2, UnitClass('player'))
-    local race   = select(2, UnitRace('player'))
-    local gender = UnitSex('player')
+    local class = select(2, UnitClass('player'))
+    class = class:upper()
+
+    local race = select(2, UnitRace('player'))
+    race = race:upper()
+
+    local gender = UnitSex('player') == 2 and 'MALE' or 'FEMALE'
     local level  = UnitLevel('player')
 
     self.charDb = self.realmDb.chars[self.char]
