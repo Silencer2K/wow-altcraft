@@ -19,7 +19,9 @@ function frame:OnInitialize()
     self.ILevelSort:SetText(L.sort_char_ilevel)
     self.MoneySort:SetText(L.sort_char_money)
     self.Prof1Sort:SetText(L.sort_char_prof)
+    self.Prof1LevelSort:SetText(L.sort_char_level)
     self.Prof2Sort:SetText(L.sort_char_prof)
+    self.Prof2LevelSort:SetText(L.sort_char_level)
 
     self.CharsScroll:OnInitialize()
 
@@ -153,6 +155,30 @@ function frame:GetSortedChars()
             end
             return (a.data[column] or 0) > (b.data[column] or 0)
         end)
+    elseif column == 'prof1' or column == 'prof2' then
+        table.sort(list, function(a, b)
+            local index = column:match('%d+') - 1
+
+            av = a.data.profs[index] and a.data.profs[index].name or ''
+            bv = b.data.profs[index] and b.data.profs[index].name or ''
+
+            if reverse then
+                return av > bv
+            end
+            return av < bv
+        end)
+    elseif column == 'prof1level' or column == 'prof2level' then
+        table.sort(list, function(a, b)
+            local index = column:match('%d+') - 1
+
+            av = a.data.profs[index] and a.data.profs[index].level or 0
+            bv = b.data.profs[index] and b.data.profs[index].level or 0
+
+            if reverse then
+                return av < bv
+            end
+            return av > bv
+        end)
     else
         table.sort(list, function(a, b)
             if reverse then
@@ -167,7 +193,7 @@ end
 
 function frame:UpdateSort()
     local column
-    for column in valuesIterator({ 'Name', 'Level', 'ILevel', 'Money', 'Prof1', 'Prof2' }) do
+    for column in valuesIterator({ 'Name', 'Level', 'ILevel', 'Money', 'Prof1', 'Prof1Level', 'Prof2', 'Prof2Level' }) do
         local button = self[column .. 'Sort']
 
         if self.sortColumn == column:lower() then
@@ -225,10 +251,11 @@ function frame.CharsScroll:Update()
             local profIndex
             for profIndex = 1, 2 do
                 if char.data.profs[profIndex - 1] then
-                    button['Prof' .. profIndex]:SetText(string.format('%s [%d]',
-                        char.data.profs[profIndex - 1].name, char.data.profs[profIndex - 1].level))
+                    button['Prof' .. profIndex]:SetText(char.data.profs[profIndex - 1].name)
+                    button['Prof' .. profIndex .. 'Level']:SetText(char.data.profs[profIndex - 1].level)
                 else
                     button['Prof' .. profIndex]:SetText('')
+                    button['Prof' .. profIndex .. 'Level']:SetText('')
                 end
             end
         else

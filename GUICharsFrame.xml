@@ -22,50 +22,66 @@
                 </Texture>
                 <FontString name="$parentName" inherits="GameFontHighlightSmall" justifyH="LEFT" wordwrap="false" parentKey="Name">
                     <Size>
-                        <AbsDimension x="130" y="10" />
+                        <AbsDimension x="128" y="10" />
                     </Size>
                     <Anchors>
-                        <Anchor point="LEFT" x="2" y="0" relativeTo="$parentClassIcon" relativePoint="RIGHT" />
+                        <Anchor point="LEFT" x="5" y="0" relativeTo="$parentClassIcon" relativePoint="RIGHT" />
                     </Anchors>
                 </FontString>
                 <FontString name="$parentLevel" inherits="GameFontHighlightSmall" justifyH="RIGHT" wordwrap="false" parentKey="Level">
                     <Size>
-                        <AbsDimension x="51" y="10" />
+                        <AbsDimension x="43" y="10" />
                     </Size>
                     <Anchors>
-                        <Anchor point="LEFT" x="160" y="0" />
+                        <Anchor point="LEFT" relativeTo="$parentName" relativePoint="RIGHT" x="5" y="0" />
                     </Anchors>
                 </FontString>
                 <FontString name="$parentILevel" inherits="GameFontHighlightSmall" justifyH="RIGHT" wordwrap="false" parentKey="ILevel">
                     <Size>
-                        <AbsDimension x="51" y="10" />
+                        <AbsDimension x="43" y="10" />
                     </Size>
                     <Anchors>
-                        <Anchor point="LEFT" x="218" y="0" />
+                        <Anchor point="LEFT" relativeTo="$parentLevel" relativePoint="RIGHT" x="5" y="0" />
                     </Anchors>
                 </FontString>
                 <FontString name="$parentMoney" inherits="GameFontHighlightSmall" justifyH="RIGHT" wordwrap="false" parentKey="Money">
                     <Size>
-                        <AbsDimension x="119" y="10" />
+                        <AbsDimension x="123" y="10" />
                     </Size>
                     <Anchors>
-                        <Anchor point="LEFT" x="276" y="0" />
+                        <Anchor point="LEFT" relativeTo="$parentILevel" relativePoint="RIGHT" x="5" y="0" />
                     </Anchors>
                 </FontString>
                 <FontString name="$parentProf1" inherits="GameFontHighlightSmall" justifyH="LEFT" wordwrap="false" parentKey="Prof1">
                     <Size>
-                        <AbsDimension x="151" y="10" />
+                        <AbsDimension x="113" y="10" />
                     </Size>
                     <Anchors>
-                        <Anchor point="LEFT" x="404" y="0" />
+                        <Anchor point="LEFT" relativeTo="$parentMoney" relativePoint="RIGHT" x="5" y="0" />
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentProf1Level" inherits="GameFontHighlightSmall" justifyH="RIGHT" wordwrap="false" parentKey="Prof1Level">
+                    <Size>
+                        <AbsDimension x="43" y="10" />
+                    </Size>
+                    <Anchors>
+                        <Anchor point="LEFT" relativeTo="$parentProf1" relativePoint="RIGHT" x="5" y="0" />
                     </Anchors>
                 </FontString>
                 <FontString name="$parentProf2" inherits="GameFontHighlightSmall" justifyH="LEFT" wordwrap="false" parentKey="Prof2">
                     <Size>
-                        <AbsDimension x="151" y="10" />
+                        <AbsDimension x="113" y="10" />
                     </Size>
                     <Anchors>
-                        <Anchor point="LEFT" x="562" y="0" />
+                        <Anchor point="LEFT" relativeTo="$parentProf1Level" relativePoint="RIGHT" x="5" y="0" />
+                    </Anchors>
+                </FontString>
+                <FontString name="$parentProf2Level" inherits="GameFontHighlightSmall" justifyH="RIGHT" wordwrap="false" parentKey="Prof2Level">
+                    <Size>
+                        <AbsDimension x="43" y="10" />
+                    </Size>
+                    <Anchors>
+                        <Anchor point="LEFT" relativeTo="$parentProf2" relativePoint="RIGHT" x="5" y="0" />
                     </Anchors>
                 </FontString>
             </Layer>
@@ -186,7 +202,7 @@
             </Button>
             <Button name="$parentLevelSort" inherits="AltCraftSortButtonTemplate" parentKey="LevelSort">
                 <Size>
-                    <AbsDimension x="60" y="19" />
+                    <AbsDimension x="50" y="19" />
                 </Size>
                 <Anchors>
                     <Anchor point="LEFT" relativeTo="$parentNameSort" relativePoint="RIGHT">
@@ -203,7 +219,7 @@
             </Button>
             <Button name="$parentILevelSort" inherits="AltCraftSortButtonTemplate" parentKey="ILevelSort">
                 <Size>
-                    <AbsDimension x="60" y="19" />
+                    <AbsDimension x="50" y="19" />
                 </Size>
                 <Anchors>
                     <Anchor point="LEFT" relativeTo="$parentLevelSort" relativePoint="RIGHT">
@@ -237,7 +253,7 @@
             </Button>
             <Button name="$parentProf1Sort" inherits="AltCraftSortButtonTemplate" parentKey="Prof1Sort">
                 <Size>
-                    <AbsDimension x="160" y="19" />
+                    <AbsDimension x="120" y="19" />
                 </Size>
                 <Anchors>
                     <Anchor point="LEFT" relativeTo="$parentMoneySort" relativePoint="RIGHT">
@@ -252,9 +268,9 @@
                     ]]></OnClick>
                 </Scripts>
             </Button>
-            <Button name="$parentProf2Sort" inherits="AltCraftSortButtonTemplate" parentKey="Prof2Sort">
+            <Button name="$parentProf1LevelSort" inherits="AltCraftSortButtonTemplate" parentKey="Prof1LevelSort">
                 <Size>
-                    <AbsDimension x="160" y="19" />
+                    <AbsDimension x="50" y="19" />
                 </Size>
                 <Anchors>
                     <Anchor point="LEFT" relativeTo="$parentProf1Sort" relativePoint="RIGHT">
@@ -265,7 +281,41 @@
                 </Anchors>
                 <Scripts>
                     <OnClick><![CDATA[
+                        self:GetParent():OnSelectSort('prof1level')
+                    ]]></OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentProf2Sort" inherits="AltCraftSortButtonTemplate" parentKey="Prof2Sort">
+                <Size>
+                    <AbsDimension x="120" y="19" />
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentProf1LevelSort" relativePoint="RIGHT">
+                        <Offset>
+                            <AbsDimension x="-2" y="0" />
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick><![CDATA[
                         self:GetParent():OnSelectSort('prof2')
+                    ]]></OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentProf2LevelSort" inherits="AltCraftSortButtonTemplate" parentKey="Prof2LevelSort">
+                <Size>
+                    <AbsDimension x="50" y="19" />
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="$parentProf2Sort" relativePoint="RIGHT">
+                        <Offset>
+                            <AbsDimension x="-2" y="0" />
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick><![CDATA[
+                        self:GetParent():OnSelectSort('prof2level')
                     ]]></OnClick>
                 </Scripts>
             </Button>
