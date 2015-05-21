@@ -27,6 +27,42 @@ local PROF_SKILLS = {
     [773] = 'Inscription',
 }
 
+local PROF_LEVELS = {
+    Blacksmithing = {
+        {  5,   0,   0,  75 },
+        { 10,  50,  75, 150 },
+        { 20, 125, 150, 225 },
+        { 35, 200, 225, 300 },
+        { 50, 275, 300, 375 },
+        { 65, 350, 375, 450 },
+        { 75, 425, 450, 525 },
+        { 85, 500, 525, 600 },
+        { 90,   0, 600, 700 },
+    },
+    Herbalism = {
+        {  0,   0,   0,  75 },
+        {  0,  50,  75, 150 },
+        { 10, 125, 150, 225 },
+        { 25, 200, 225, 300 },
+        { 40, 275, 300, 375 },
+        { 55, 350, 375, 450 },
+        { 75, 425, 450, 525 },
+        { 85, 500, 525, 600 },
+        { 90,   0, 600, 700 },
+    },
+}
+
+PROF_SKILLS.Leatherworking = PROF_SKILLS.Blacksmithing
+PROF_SKILLS.Alchemy        = PROF_SKILLS.Blacksmithing
+PROF_SKILLS.Tailoring      = PROF_SKILLS.Blacksmithing
+PROF_SKILLS.Engineering    = PROF_SKILLS.Blacksmithing
+PROF_SKILLS.Enchanting     = PROF_SKILLS.Blacksmithing
+PROF_SKILLS.Jewelcrafting  = PROF_SKILLS.Blacksmithing
+PROF_SKILLS.Inscription    = PROF_SKILLS.Blacksmithing
+
+PROF_SKILLS.Mining   = PROF_SKILLS.Herbalism
+PROF_SKILLS.Skinning = PROF_SKILLS.Herbalism
+
 function addon:OnInitialize()
     self.db = LibStub('AceDB-3.0'):New(addonName .. 'DB', self:GetDefaults(), true)
 
