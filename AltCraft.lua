@@ -4,7 +4,7 @@ LibStub('AceAddon-3.0'):NewAddon(addon, addonName, 'AceEvent-3.0', 'AceTimer-3.0
 
 local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
 
-local VERSION = 3
+local VERSION = 4
 
 local COLOR_TOOLTIP         = { 1.0, 1.0, 1.0 }
 local COLOR_TOOLTIP_2L      = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 }
@@ -12,6 +12,20 @@ local COLOR_ICON_TOOLTIP    = { 0.8, 0.8, 0.8 }
 
 local COLOR_TOOLTIP_SOURCE  = 'ffffffff'
 local COLOR_TOOLTIP_COUNT   = 'ffffff00'
+
+local PROF_SKILLS = {
+    [164] = 'Blacksmithing',
+    [165] = 'Leatherworking',
+    [171] = 'Alchemy',
+    [182] = 'Herbalism',
+    [186] = 'Mining',
+    [197] = 'Tailoring',
+    [202] = 'Engineering',
+    [333] = 'Enchanting',
+    [393] = 'Skinning',
+    [755] = 'Jewelcrafting',
+    [773] = 'Inscription',
+}
 
 function addon:OnInitialize()
     self.db = LibStub('AceDB-3.0'):New(addonName .. 'DB', self:GetDefaults(), true)
@@ -315,11 +329,12 @@ function addon:ScanProfs()
 
     local profIndex
     for profIndex = 1, 2 do
-        if not profs[profIndex] then
-            self.charDb.profs[profIndex - 1] = nil
-        else
-            local name, level = unpackByIndex({ GetProfessionInfo(profs[profIndex]) }, 1, 3)
-            self.charDb.profs[profIndex - 1] = { name = name, level = level }
+        self.charDb.profs[profIndex - 1] = nil
+        if profs[profIndex] then
+            local skill, level = unpackByIndex({ GetProfessionInfo(profs[profIndex]) }, 7, 3)
+            if PROF_SKILLS[skill] then
+                self.charDb.profs[profIndex - 1] = { name = PROF_SKILLS[skill], level = level }
+            end
         end
     end
 

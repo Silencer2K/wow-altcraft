@@ -1,6 +1,7 @@
 local addonName, addon = ...
 
 local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
+local LBI = LibStub('LibBabble-Inventory-3.0'):GetUnstrictLookupTable()
 
 local RACE_ICON_TCOORDS = {
     HUMAN_MALE      = { 0, 0.125, 0, 0.25 },
@@ -304,7 +305,7 @@ function frame.CharsScroll:Update()
             local profIndex
             for profIndex = 1, 2 do
                 if char.data.profs[profIndex - 1] then
-                    button['Prof' .. profIndex]:SetText(char.data.profs[profIndex - 1].name)
+                    button['Prof' .. profIndex]:SetText(LBI[char.data.profs[profIndex - 1].name])
                     button['Prof' .. profIndex .. 'Level']:SetText(char.data.profs[profIndex - 1].level)
                 else
                     button['Prof' .. profIndex]:SetText('')
