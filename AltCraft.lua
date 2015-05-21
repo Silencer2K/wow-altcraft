@@ -13,7 +13,7 @@ local COLOR_ICON_TOOLTIP    = { 0.8, 0.8, 0.8 }
 local COLOR_TOOLTIP_SOURCE  = 'ffffffff'
 local COLOR_TOOLTIP_COUNT   = 'ffffff00'
 
-local PROF_SKILLS = {
+local PROF_SKILLLINE = {
     [164] = 'Blacksmithing',
     [165] = 'Leatherworking',
     [171] = 'Alchemy',
@@ -52,16 +52,16 @@ local PROF_LEVELS = {
     },
 }
 
-PROF_SKILLS.Leatherworking = PROF_SKILLS.Blacksmithing
-PROF_SKILLS.Alchemy        = PROF_SKILLS.Blacksmithing
-PROF_SKILLS.Tailoring      = PROF_SKILLS.Blacksmithing
-PROF_SKILLS.Engineering    = PROF_SKILLS.Blacksmithing
-PROF_SKILLS.Enchanting     = PROF_SKILLS.Blacksmithing
-PROF_SKILLS.Jewelcrafting  = PROF_SKILLS.Blacksmithing
-PROF_SKILLS.Inscription    = PROF_SKILLS.Blacksmithing
+PROF_LEVELS.Leatherworking = PROF_LEVELS.Blacksmithing
+PROF_LEVELS.Alchemy        = PROF_LEVELS.Blacksmithing
+PROF_LEVELS.Tailoring      = PROF_LEVELS.Blacksmithing
+PROF_LEVELS.Engineering    = PROF_LEVELS.Blacksmithing
+PROF_LEVELS.Enchanting     = PROF_LEVELS.Blacksmithing
+PROF_LEVELS.Jewelcrafting  = PROF_LEVELS.Blacksmithing
+PROF_LEVELS.Inscription    = PROF_LEVELS.Blacksmithing
 
-PROF_SKILLS.Mining   = PROF_SKILLS.Herbalism
-PROF_SKILLS.Skinning = PROF_SKILLS.Herbalism
+PROF_LEVELS.Mining   = PROF_LEVELS.Herbalism
+PROF_LEVELS.Skinning = PROF_LEVELS.Herbalism
 
 function addon:OnInitialize()
     self.db = LibStub('AceDB-3.0'):New(addonName .. 'DB', self:GetDefaults(), true)
@@ -368,8 +368,8 @@ function addon:ScanProfs()
         self.charDb.profs[profIndex - 1] = nil
         if profs[profIndex] then
             local skill, level = unpackByIndex({ GetProfessionInfo(profs[profIndex]) }, 7, 3)
-            if PROF_SKILLS[skill] then
-                self.charDb.profs[profIndex - 1] = { name = PROF_SKILLS[skill], level = level }
+            if PROF_SKILLLINE[skill] then
+                self.charDb.profs[profIndex - 1] = { name = PROF_SKILLLINE[skill], level = level }
             end
         end
     end
