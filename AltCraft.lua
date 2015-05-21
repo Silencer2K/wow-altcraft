@@ -4,6 +4,8 @@ LibStub('AceAddon-3.0'):NewAddon(addon, addonName, 'AceEvent-3.0', 'AceTimer-3.0
 
 local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
 
+local VERSION = 1
+
 local COLOR_TOOLTIP         = { 1.0, 1.0, 1.0 }
 local COLOR_TOOLTIP_2L      = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 }
 local COLOR_ICON_TOOLTIP    = { 0.8, 0.8, 0.8 }
@@ -13,6 +15,11 @@ local COLOR_TOOLTIP_COUNT   = 'ffffff00'
 
 function addon:OnInitialize()
     self.db = LibStub('AceDB-3.0'):New(addonName .. 'DB', self:GetDefaults(), true)
+
+    if not self.db.global.version or self.db.global.version ~= VERSION then
+        self.db.global.version = VERSION
+        self.db.global.realms = {}
+    end
 
     self.ldb = LibStub('LibDataBroker-1.1'):NewDataObject(addonName, {
         type = 'launcher',
