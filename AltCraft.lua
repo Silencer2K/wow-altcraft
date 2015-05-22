@@ -15,8 +15,14 @@ local COLOR_TOOLTIP_COUNT   = 'ffffff00'
 
 local COLOR_LEVELS          = {{ 1.0, 0.0, 0.0 }, { 1.0, 1.0, 0.0 }, { 0.0, 1.0, 0.0 }}
 
-local CHAR_MAX_LEVEL        = 100
-local CHAR_PREV_MAX_LEVEL   = 90
+local CHAR_MAX_LEVEL            = 100
+local CHAR_PREV_LEVEL           = 90
+local CHAR_PREV_PREV_MAX_LEVEL  = 85
+
+local LAST_RAID_HEROIC_ILEVEL   = 685
+local LAST_RAID_NORMAL_ILEVEL   = 670
+local LAST_RAID_LFR_ILEVEL      = 660
+
 local PROF_MAX_LEVEL        = 700
 
 local PROF_SKILLLINE = {
@@ -549,14 +555,14 @@ function addon:GetFactionColor(faction)
 end
 
 function addon:GetLevelColor(level)
-    if level >= CHAR_PREV_MAX_LEVEL then
-        return self:ColorRGBToText(unpack(COLOR_LEVELS[level == CHAR_MAX_LEVEL and 3 or 1]))
+    if level >= CHAR_PREV_PREV_MAX_LEVEL then
+        return self:ColorRGBToText(unpack(COLOR_LEVELS[level == CHAR_MAX_LEVEL and 3 or (level >= CHAR_PREV_MAX_LEVEL and 2 or 1)]))
     end
 end
 
 function addon:GetILevelColor(level, iLevel)
-    if level == CHAR_MAX_LEVEL and iLevel >= 660 then
-        return self:ColorRGBToText(unpack(COLOR_LEVELS[iLevel >= 685 and 3 or (iLevel >= 670 and 2 or 1)]))
+    if level == CHAR_MAX_LEVEL and iLevel >= LAST_RAID_LFR_ILEVEL then
+        return self:ColorRGBToText(unpack(COLOR_LEVELS[iLevel >= LAST_RAID_HEROIC_ILEVEL and 3 or (iLevel >= LAST_RAID_NORMAL_ILEVEL and 2 or 1)]))
     end
 end
 
