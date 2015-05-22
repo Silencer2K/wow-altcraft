@@ -91,7 +91,7 @@ function addon:OnInitialize()
             if button == 'RightButton' then
                 InterfaceOptionsFrame_OpenToCategory(addonName)
             else
-                if AltCraftFrame:IsShown() and AltCraftFrame.CharsTabFrame:IsShown() then
+                if AltCraftFrame:IsShown() and AltCraftFrameCharsTabFrame:IsShown() then
                     AltCraftFrame:Hide()
                 else
                     AltCraftFrame:Show()
@@ -190,9 +190,9 @@ function addon:OnInitialize()
 end
 
 function addon:UpdateFrames(what)
-    if AltCraftFrame:IsShown() and AltCraftFrame.CharsTabFrame:IsShown() then
+    if AltCraftFrame:IsShown() and AltCraftFrameCharsTabFrame:IsShown() then
         if what == 'level' or what == 'ilevel' or what == 'money' or what == 'profs' then
-            AltCraftFrame.CharsTabFrame:Update()
+            AltCraftFrameCharsTabFrame:Update()
         end
     end
 end
