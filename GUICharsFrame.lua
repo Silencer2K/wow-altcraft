@@ -137,7 +137,7 @@ function frame:UpdateSelectRealm()
             self:Update()
         end
 
-        local selectedRealm = self.selectedRealm or addon.realm
+        local selectedRealm = addon.realm
 
         local realm
         for realm in valuesIterator(addon:GetRealms()) do
@@ -174,7 +174,7 @@ function frame:UpdateSelectFaction()
             self:Update()
         end
 
-        local selectedFaction = self.selectedFaction or addon.faction
+        local selectedFaction = addon.faction
 
         local faction
         for faction in valuesIterator({ 'ALLIANCE', 'HORDE' }) do
