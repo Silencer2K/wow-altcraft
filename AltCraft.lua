@@ -526,7 +526,7 @@ function addon:GetChars(realm, faction)
 end
 
 function addon:CanDeleteChar(char, realm)
-    return char and realm and not (char == (UnitName('player'))[1] and realm == GetRealmName())
+    return char and realm and not (char == ({ UnitName('player') })[1] and realm == GetRealmName())
 end
 
 function addon:DeleteChar(char, realm)
