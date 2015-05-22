@@ -353,6 +353,11 @@
                         </Texture>
                     </Layer>
                 </Layers>
+                <Scripts>
+                    <OnClick><![CDATA[
+                        self:GetParent():OnDeleteClick()
+                    ]]></OnClick>
+                </Scripts>
             </Button>
         </Frames>
         <Scripts>

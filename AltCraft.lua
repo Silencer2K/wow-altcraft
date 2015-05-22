@@ -13,6 +13,8 @@ local COLOR_ICON_TOOLTIP    = { 0.8, 0.8, 0.8 }
 local COLOR_TOOLTIP_SOURCE  = 'ffffffff'
 local COLOR_TOOLTIP_COUNT   = 'ffffff00'
 
+local COLOR_LEVELS          = {{ 1.0, 0.0, 0.0 }, { 1.0, 1.0, 0.0 }, { 0.0, 1.0, 0.0 }}
+
 local PROF_SKILLLINE = {
     [164] = 'Blacksmithing',
     [165] = 'Leatherworking',
@@ -26,6 +28,8 @@ local PROF_SKILLLINE = {
     [755] = 'Jewelcrafting',
     [773] = 'Inscription',
 }
+
+local PROF_MAX_LEVEL = 700
 
 local PROF_LEVELS = {
     Blacksmithing = {
@@ -467,38 +471,6 @@ function addon:ScanInbox(deffered)
     self:UpdateFrames('mail')
 end
 
-function addon:GetRealms()
-    local list = {}
-
-    for realm in pairs(self.db.global.realms) do
-        if not tableIsEmpty(self.db.global.realms[realm]) then
-            table.insert(list, realm)
-        end
-    end
-
-    table.sort(list)
-
-    return list
-end
-
-function addon:GetChars(realm, faction)
-    realm = realm or self.realm
-    faction = faction and faction:upper() or self.faction
-
-    local list = {}
-
-    if self.db.global.realms[realm] then
-        local char, charDb
-        for char, charDb in pairs(self.db.global.realms[realm].chars) do
-            if faction == charDb.faction then
-                list[char] = charDb
-            end
-        end
-    end
-
-    return list
-end
-
 function addon:GetCharDb(char, realm)
     char = char:lower()
 
@@ -519,13 +491,82 @@ function addon:GetCharDb(char, realm)
     end
 end
 
+function addon:GetRealms()
+    local list = {}
+
+    for realm in pairs(self.db.global.realms) do
+        if not tableIsEmpty(self.db.global.realms[realm]) then
+            table.insert(list, realm)
+        end
+    end
+
+    table.sort(list)
+
+    return list
+end
+
+function addon:GetChars(realm, faction)
+    realm = realm or self.realm
+    faction = faction or self.faction
+
+    local list = {}
+
+    if self.db.global.realms[realm] then
+        local char, charDb
+        for char, charDb in pairs(self.db.global.realms[realm].chars) do
+            if faction == charDb.faction then
+                list[char] = charDb
+            end
+        end
+    end
+
+    return list
+end
+
+function addon:CanDeleteChar(char, realm)
+    return char and realm and not (char == self.char and realm == self.realm)
+end
+
+function addon:DeleteChar(char, realm)
+    if self:CanDeleteChar(char, realm) then
+        self.db.global.realms[realm].chars[char] = nil
+    end
+end
+
+function addon:ColorRGBToText(r, g, b)
+    return string.format("ff%02x%02x%02x", r * 255, g * 255, b * 255)
+end
+
 function addon:GetFactionColor(faction)
-    faction = faction and faction:upper() or self.faction
+    faction = faction or self.faction
 
     local ids = { HORDE = 0, ALLIANCE = 1 }
     local color = PLAYER_FACTION_COLORS[ids[faction]]
 
-    return string.format("ff%02x%02x%02x", color.r * 255, color.g * 255, color.b * 255)
+    return self:ColorRGBToText(color.r, color.g, color.b)
+end
+
+function addon:GetProfColor(level, prof, profLevel)
+    if profLevel == PROF_MAX_LEVEL then
+        return self:ColorRGBToText(unpack(COLOR_LEVELS[3]))
+    end
+
+    local profLevelPoor, profLevelGood = PROF_MAX_LEVEL + 1, 0
+    local minLevel
+
+    local i
+    for i = #PROF_LEVELS[prof], 1, -1 do
+        if level >= PROF_LEVELS[prof][i][1] and (not minLevel or minLevel == PROF_LEVELS[prof][i][1]) then
+            minLevel = PROF_LEVELS[prof][i][1]
+
+            profLevelPoor = math.min(profLevelPoor, PROF_LEVELS[prof][i][3])
+            profLevelGood = math.max(profLevelGood, PROF_LEVELS[prof][i][4])
+        end
+    end
+
+    if profLevel >= profLevelPoor then
+        return self:ColorRGBToText(unpack(COLOR_LEVELS[profLevel >= profLevelGood and 2 or 1]))
+    end
 end
 
 function addon:OnGameTooltipCleared(tooltip)

@@ -100,11 +100,26 @@ function frame:OnSelectChar(button)
     self:Update()
 end
 
+function frame:OnDeleteClick()
+    if addon:CanDeleteChar(self.selectedChar, self.selectedRealm) then
+        addon:DeleteChar(self.selectedChar, self.selectedRealm)
+
+        self.selectedChar = nil
+        self:Update()
+    end
+end
+
 function frame:Update()
     self:UpdateSelectRealm()
     self:UpdateSelectFaction()
     self:UpdateSort()
     self.CharsScroll:Update()
+
+    if addon:CanDeleteChar(self.selectedChar, self.selectedRealm) then
+        self.DeleteButton:Enable()
+    else
+        self.DeleteButton:Disable()
+    end
 end
 
 function frame:UpdateSelectRealm()
@@ -167,7 +182,7 @@ function frame:UpdateSelectFaction()
             info.text = string.format(
                 '|c%s%s (%d)|r',
                 addon:GetFactionColor(faction),
-                _G['FACTION_' .. faction:upper()],
+                _G['FACTION_' .. faction],
                 tableLength(addon:GetChars(self.selectedRealm, faction))
             )
 
@@ -305,8 +320,15 @@ function frame.CharsScroll:Update()
             local profIndex
             for profIndex = 1, 2 do
                 if char.data.profs[profIndex - 1] then
-                    button['Prof' .. profIndex]:SetText(LBI[char.data.profs[profIndex - 1].name])
-                    button['Prof' .. profIndex .. 'Level']:SetText(char.data.profs[profIndex - 1].level)
+                    local color = addon:GetProfColor(char.data.level, char.data.profs[profIndex - 1].name, char.data.profs[profIndex - 1].level)
+
+                    if color then
+                        button['Prof' .. profIndex]:SetText(string.format('|c%s%s|r', color, LBI[char.data.profs[profIndex - 1].name]))
+                        button['Prof' .. profIndex .. 'Level']:SetText(string.format('|c%s%s|r', color, char.data.profs[profIndex - 1].level))
+                    else
+                        button['Prof' .. profIndex]:SetText(LBI[char.data.profs[profIndex - 1].name])
+                        button['Prof' .. profIndex .. 'Level']:SetText(char.data.profs[profIndex - 1].level)
+                    end
                 else
                     button['Prof' .. profIndex]:SetText('')
                     button['Prof' .. profIndex .. 'Level']:SetText('')
