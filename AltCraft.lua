@@ -16,7 +16,7 @@ local COLOR_TOOLTIP_COUNT   = 'ffffff00'
 local COLOR_LEVELS          = {{ 1.0, 0.0, 0.0 }, { 1.0, 1.0, 0.0 }, { 0.0, 1.0, 0.0 }}
 
 local CHAR_MAX_LEVEL            = 100
-local CHAR_PREV_LEVEL           = 90
+local CHAR_PREV_MAX_LEVEL       = 90
 local CHAR_PREV_PREV_MAX_LEVEL  = 85
 
 local LAST_RAID_HEROIC_ILEVEL   = 685
