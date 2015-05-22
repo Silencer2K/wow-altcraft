@@ -312,16 +312,26 @@ function frame.CharsScroll:Update()
             button.Name:SetTextColor(RAID_CLASS_COLORS[char.data.class].r,
                 RAID_CLASS_COLORS[char.data.class].g, RAID_CLASS_COLORS[char.data.class].b)
 
-            button.Level:SetText(char.data.level)
-            button.ILevel:SetText(math.floor(char.data.ilevel))
+            local color = addon:GetLevelColor(char.data.level)
+            if color then
+                button.Level:SetText(string.format('|c%s%s|r', color, char.data.level))
+            else
+                button.Level:SetText(char.data.level)
+            end
+
+            color = addon:GetILevelColor(char.data.level, char.data.ilevel)
+            if color then
+                button.ILevel:SetText(string.format('|c%s%s|r', color, math.floor(char.data.ilevel)))
+            else
+                button.ILevel:SetText(math.floor(char.data.ilevel))
+            end
 
             button.Money:SetText(GetCoinTextureString(char.data.money, 10))
 
             local profIndex
             for profIndex = 1, 2 do
                 if char.data.profs[profIndex - 1] then
-                    local color = addon:GetProfColor(char.data.level, char.data.profs[profIndex - 1].name, char.data.profs[profIndex - 1].level)
-
+                    color = addon:GetProfColor(char.data.level, char.data.profs[profIndex - 1].name, char.data.profs[profIndex - 1].level)
                     if color then
                         button['Prof' .. profIndex]:SetText(string.format('|c%s%s|r', color, LBI[char.data.profs[profIndex - 1].name]))
                         button['Prof' .. profIndex .. 'Level']:SetText(string.format('|c%s%s|r', color, char.data.profs[profIndex - 1].level))

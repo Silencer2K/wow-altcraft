@@ -15,6 +15,10 @@ local COLOR_TOOLTIP_COUNT   = 'ffffff00'
 
 local COLOR_LEVELS          = {{ 1.0, 0.0, 0.0 }, { 1.0, 1.0, 0.0 }, { 0.0, 1.0, 0.0 }}
 
+local CHAR_MAX_LEVEL        = 100
+local CHAR_PREV_MAX_LEVEL   = 90
+local PROF_MAX_LEVEL        = 700
+
 local PROF_SKILLLINE = {
     [164] = 'Blacksmithing',
     [165] = 'Leatherworking',
@@ -28,8 +32,6 @@ local PROF_SKILLLINE = {
     [755] = 'Jewelcrafting',
     [773] = 'Inscription',
 }
-
-local PROF_MAX_LEVEL = 700
 
 local PROF_LEVELS = {
     Blacksmithing = {
@@ -56,16 +58,16 @@ local PROF_LEVELS = {
     },
 }
 
-PROF_LEVELS.Leatherworking = PROF_LEVELS.Blacksmithing
-PROF_LEVELS.Alchemy        = PROF_LEVELS.Blacksmithing
-PROF_LEVELS.Tailoring      = PROF_LEVELS.Blacksmithing
-PROF_LEVELS.Engineering    = PROF_LEVELS.Blacksmithing
-PROF_LEVELS.Enchanting     = PROF_LEVELS.Blacksmithing
-PROF_LEVELS.Jewelcrafting  = PROF_LEVELS.Blacksmithing
-PROF_LEVELS.Inscription    = PROF_LEVELS.Blacksmithing
+PROF_LEVELS.Leatherworking  = PROF_LEVELS.Blacksmithing
+PROF_LEVELS.Alchemy         = PROF_LEVELS.Blacksmithing
+PROF_LEVELS.Tailoring       = PROF_LEVELS.Blacksmithing
+PROF_LEVELS.Engineering     = PROF_LEVELS.Blacksmithing
+PROF_LEVELS.Enchanting      = PROF_LEVELS.Blacksmithing
+PROF_LEVELS.Jewelcrafting   = PROF_LEVELS.Blacksmithing
+PROF_LEVELS.Inscription     = PROF_LEVELS.Blacksmithing
 
-PROF_LEVELS.Mining   = PROF_LEVELS.Herbalism
-PROF_LEVELS.Skinning = PROF_LEVELS.Herbalism
+PROF_LEVELS.Mining          = PROF_LEVELS.Herbalism
+PROF_LEVELS.Skinning        = PROF_LEVELS.Herbalism
 
 function addon:OnInitialize()
     self.db = LibStub('AceDB-3.0'):New(addonName .. 'DB', self:GetDefaults(), true)
@@ -544,6 +546,18 @@ function addon:GetFactionColor(faction)
     local color = PLAYER_FACTION_COLORS[ids[faction]]
 
     return self:ColorRGBToText(color.r, color.g, color.b)
+end
+
+function addon:GetLevelColor(level)
+    if level >= CHAR_PREV_MAX_LEVEL then
+        return self:ColorRGBToText(unpack(COLOR_LEVELS[level == CHAR_MAX_LEVEL and 3 or 1]))
+    end
+end
+
+function addon:GetILevelColor(level, iLevel)
+    if level == CHAR_MAX_LEVEL and iLevel >= 660 then
+        return self:ColorRGBToText(unpack(COLOR_LEVELS[iLevel >= 685 and 3 or (iLevel >= 670 and 2 or 1)]))
+    end
 end
 
 function addon:GetProfColor(level, prof, profLevel)
