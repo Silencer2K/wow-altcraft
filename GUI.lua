@@ -6,8 +6,13 @@ ALTCRAFT_TABS = {}
 
 local frame = AltCraftFrame
 
-function frame:AddTab(frame, label)
-    table.insert(ALTCRAFT_TABS, { frame = frame, label = label })
+function frame:AddTab(tabFrame, label)
+    table.insert(ALTCRAFT_TABS, { frame = tabFrame, label = label })
+
+    tabFrame:SetParent(self)
+
+    tabFrame:ClearAllPoints()
+    tabFrame:SetPoint('TOPLEFT')
 
     if _G[self:GetName() .. 'Tab1'] then
         self:UpdateTabs()

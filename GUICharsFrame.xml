@@ -102,7 +102,7 @@
             ]]></OnClick>
         </Scripts>
     </Button>
-    <Frame name="AltCraftFrameCharsTabFrame" parent="AltCraftFrame" parentKey="CharsTabFrame" hidden="true">
+    <Frame name="AltCraftFrameCharsTabFrame" hidden="true">
         <Size x="768" y="447" />
         <Anchors>
             <Anchor point="TOPLEFT" />
