@@ -215,12 +215,8 @@ function addon:OnLogin()
         self.db.global.realms[realm] = self.realmDb
     end
 
-    local class = select(2, UnitClass('player'))
-    class = class:upper()
-
-    local race = select(2, UnitRace('player'))
-    race = race:upper()
-
+    local class = ({ UnitClass('player') })[2]:upper()
+    local race = ({ UnitRace('player') })[2]:upper()
     local gender = UnitSex('player') == 2 and 'MALE' or 'FEMALE'
     local level  = UnitLevel('player')
 
