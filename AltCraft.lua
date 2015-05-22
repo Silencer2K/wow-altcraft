@@ -13,17 +13,8 @@ local COLOR_ICON_TOOLTIP    = { 0.8, 0.8, 0.8 }
 local COLOR_TOOLTIP_SOURCE  = 'ffffffff'
 local COLOR_TOOLTIP_COUNT   = 'ffffff00'
 
-local COLOR_LEVELS          = {{ 1.0, 0.0, 0.0 }, { 1.0, 1.0, 0.0 }, { 0.0, 1.0, 0.0 }}
-
-local CHAR_MAX_LEVEL            = 100
-local CHAR_PREV_MAX_LEVEL       = 90
-local CHAR_PREV_PREV_MAX_LEVEL  = 85
-
-local LAST_RAID_HEROIC_ILEVEL   = 685
-local LAST_RAID_NORMAL_ILEVEL   = 670
-local LAST_RAID_LFR_ILEVEL      = 660
-
 local PROF_MAX_LEVEL        = 700
+local PROF_LEVEL_COLORS     = {{ 1.0, 0.0, 0.0 }, { 1.0, 1.0, 0.0 }, { 0.0, 1.0, 0.0 }}
 
 local PROF_SKILLLINE = {
     [164] = 'Blacksmithing',
@@ -555,20 +546,14 @@ function addon:GetFactionColor(faction)
 end
 
 function addon:GetLevelColor(level)
-    if level >= CHAR_PREV_PREV_MAX_LEVEL then
-        return self:ColorRGBToText(unpack(COLOR_LEVELS[level == CHAR_MAX_LEVEL and 3 or (level >= CHAR_PREV_MAX_LEVEL and 2 or 1)]))
-    end
 end
 
 function addon:GetILevelColor(level, iLevel)
-    if level == CHAR_MAX_LEVEL and iLevel >= LAST_RAID_LFR_ILEVEL then
-        return self:ColorRGBToText(unpack(COLOR_LEVELS[iLevel >= LAST_RAID_HEROIC_ILEVEL and 3 or (iLevel >= LAST_RAID_NORMAL_ILEVEL and 2 or 1)]))
-    end
 end
 
 function addon:GetProfColor(level, prof, profLevel)
     if profLevel == PROF_MAX_LEVEL then
-        return self:ColorRGBToText(unpack(COLOR_LEVELS[3]))
+        return PROF_LEVEL_COLORS[3]
     end
 
     local profLevelPoor, profLevelGood = PROF_MAX_LEVEL + 1, 0
@@ -585,7 +570,7 @@ function addon:GetProfColor(level, prof, profLevel)
     end
 
     if profLevel >= profLevelPoor then
-        return self:ColorRGBToText(unpack(COLOR_LEVELS[profLevel >= profLevelGood and 2 or 1]))
+        return PROF_LEVEL_COLORS[profLevel >= profLevelGood and 2 or 1]
     end
 end
 

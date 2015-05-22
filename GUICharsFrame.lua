@@ -3,6 +3,8 @@ local addonName, addon = ...
 local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
 local LBI = LibStub('LibBabble-Inventory-3.0'):GetUnstrictLookupTable()
 
+local DEFAULT_COLOR = { 1.0, 1.0, 1.0 }
+
 local RACE_ICON_TCOORDS = {
     HUMAN_MALE       = { 0    , 0.125, 0, 0.25 },
     DWARF_MALE       = { 0.125, 0.25 , 0, 0.25 },
@@ -313,18 +315,14 @@ function frame.CharsScroll:Update()
                 RAID_CLASS_COLORS[char.data.class].g, RAID_CLASS_COLORS[char.data.class].b)
 
             local color = addon:GetLevelColor(char.data.level)
-            if color then
-                button.Level:SetText(string.format('|c%s%s|r', color, char.data.level))
-            else
-                button.Level:SetText(char.data.level)
-            end
+
+            button.Level:SetText(char.data.level)
+            button.Level:SetTextColor(unpack(color or DEFAULT_COLOR))
 
             color = addon:GetILevelColor(char.data.level, char.data.ilevel)
-            if color then
-                button.ILevel:SetText(string.format('|c%s%s|r', color, math.floor(char.data.ilevel)))
-            else
-                button.ILevel:SetText(math.floor(char.data.ilevel))
-            end
+
+            button.ILevel:SetText(math.floor(char.data.ilevel))
+            button.ILevel:SetTextColor(unpack(color or DEFAULT_COLOR))
 
             button.Money:SetText(GetCoinTextureString(char.data.money, 10))
 
@@ -332,13 +330,12 @@ function frame.CharsScroll:Update()
             for profIndex = 1, 2 do
                 if char.data.profs[profIndex - 1] then
                     color = addon:GetProfColor(char.data.level, char.data.profs[profIndex - 1].name, char.data.profs[profIndex - 1].level)
-                    if color then
-                        button['Prof' .. profIndex]:SetText(string.format('|c%s%s|r', color, LBI[char.data.profs[profIndex - 1].name]))
-                        button['Prof' .. profIndex .. 'Level']:SetText(string.format('|c%s%s|r', color, char.data.profs[profIndex - 1].level))
-                    else
-                        button['Prof' .. profIndex]:SetText(LBI[char.data.profs[profIndex - 1].name])
-                        button['Prof' .. profIndex .. 'Level']:SetText(char.data.profs[profIndex - 1].level)
-                    end
+
+                    button['Prof' .. profIndex]:SetText(LBI[char.data.profs[profIndex - 1].name])
+                    button['Prof' .. profIndex .. 'Level']:SetText(char.data.profs[profIndex - 1].level)
+
+                    button['Prof' .. profIndex]:SetTextColor(unpack(color or DEFAULT_COLOR))
+                    button['Prof' .. profIndex .. 'Level']:SetTextColor(unpack(color or DEFAULT_COLOR))
                 else
                     button['Prof' .. profIndex]:SetText('')
                     button['Prof' .. profIndex .. 'Level']:SetText('')
