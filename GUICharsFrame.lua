@@ -328,17 +328,18 @@ function frame.CharsScroll:Update()
 
             local profIndex
             for profIndex = 1, 2 do
-                if char.data.profs[profIndex - 1] then
-                    color = addon:GetProfColor(char.data.level, char.data.profs[profIndex - 1].name, char.data.profs[profIndex - 1].level)
+                button['Prof' .. profIndex]:SetText('')
+                button['Prof' .. profIndex .. 'Level']:SetText('')
 
-                    button['Prof' .. profIndex]:SetText(LBI[char.data.profs[profIndex - 1].name])
-                    button['Prof' .. profIndex .. 'Level']:SetText(char.data.profs[profIndex - 1].level)
+                local prof = char.data.profs[profIndex - 1]
+                if prof then
+                    color = addon:GetProfColor(char.data.level, prof.name, prof.level, prof.maxLevel)
+
+                    button['Prof' .. profIndex]:SetText(LBI[prof.name])
+                    button['Prof' .. profIndex .. 'Level']:SetText(prof.level)
 
                     button['Prof' .. profIndex]:SetTextColor(unpack(color or DEFAULT_COLOR))
                     button['Prof' .. profIndex .. 'Level']:SetTextColor(unpack(color or DEFAULT_COLOR))
-                else
-                    button['Prof' .. profIndex]:SetText('')
-                    button['Prof' .. profIndex .. 'Level']:SetText('')
                 end
             end
 

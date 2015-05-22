@@ -4,7 +4,7 @@ LibStub('AceAddon-3.0'):NewAddon(addon, addonName, 'AceEvent-3.0', 'AceTimer-3.0
 
 local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
 
-local VERSION = 4
+local VERSION = 5
 
 local COLOR_TOOLTIP         = { 1.0, 1.0, 1.0 }
 local COLOR_TOOLTIP_2L      = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 }
@@ -373,9 +373,9 @@ function addon:ScanProfs()
     for profIndex = 1, 2 do
         self.charDb.profs[profIndex - 1] = nil
         if profs[profIndex] then
-            local skill, level = unpackByIndex({ GetProfessionInfo(profs[profIndex]) }, 7, 3)
+            local skill, level, maxLevel = unpackByIndex({ GetProfessionInfo(profs[profIndex]) }, 7, 3, 4)
             if PROF_SKILLLINE[skill] then
-                self.charDb.profs[profIndex - 1] = { name = PROF_SKILLLINE[skill], level = level }
+                self.charDb.profs[profIndex - 1] = { name = PROF_SKILLLINE[skill], level = level, maxLevel = maxLevel }
             end
         end
     end
@@ -549,32 +549,42 @@ function addon:GetFactionColor(faction)
 end
 
 function addon:GetLevelColor(level)
-    return level == CHAR_MAX_LEVEL and CHAR_LEVEL_COLORS[3]
+    if level >= CHAR_MAX_LEVEL then
+        return CHAR_LEVEL_COLORS[3]
+    end
 end
 
 function addon:GetILevelColor(level, iLevel)
 end
 
-function addon:GetProfColor(level, prof, profLevel)
-    if profLevel == PROF_MAX_LEVEL then
+function addon:GetProfColor(level, prof, profLevel, profMax)
+    if profLevel >= PROF_MAX_LEVEL then
         return PROF_LEVEL_COLORS[3]
     end
 
     local profLevelPoor, profLevelGood = PROF_MAX_LEVEL + 1, 0
-    local minLevel
+    local bracket
 
     local i
     for i = #PROF_LEVELS[prof], 1, -1 do
-        if level >= PROF_LEVELS[prof][i][1] and (not minLevel or minLevel == PROF_LEVELS[prof][i][1]) then
-            minLevel = PROF_LEVELS[prof][i][1]
+        if level >= PROF_LEVELS[prof][i][1] and (not bracket or bracket == PROF_LEVELS[prof][i][1]) then
+            bracket = PROF_LEVELS[prof][i][1]
 
             profLevelPoor = math.min(profLevelPoor, PROF_LEVELS[prof][i][3])
             profLevelGood = math.max(profLevelGood, PROF_LEVELS[prof][i][4])
         end
     end
 
+    if profLevel >= profLevelGood then
+        return PROF_LEVEL_COLORS[3]
+    end
+
+    if profLevel >= profMax then
+        return PROF_LEVEL_COLORS[1]
+    end
+
     if profLevel >= profLevelPoor then
-        return PROF_LEVEL_COLORS[profLevel >= profLevelGood and 2 or 1]
+        return PROF_LEVEL_COLORS[2]
     end
 end
 
