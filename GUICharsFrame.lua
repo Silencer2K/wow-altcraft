@@ -43,7 +43,7 @@ local CHAR_SCROLL_ITEM_HEIGHT = 20
 
 local frame = AltCraftFrameCharsTabFrame
 
-table.insert(ALTCRAFT_TABS, { frame = frame, label = L.tab_chars })
+AltCraftFrame:AddTab(frame, L.tab_chars)
 
 function frame:OnInitialize()
     self.Title:SetText(L.tab_chars_title)

@@ -138,5 +138,10 @@
                 </Anchors>
             </Button>
         </Frames>
+        <Scripts>
+            <OnShow><![CDATA[
+                self:OnShow()
+            ]]></OnShow>
+        </Scripts>
     </Frame>
 </Ui>
