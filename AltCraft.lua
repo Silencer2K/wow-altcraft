@@ -243,6 +243,8 @@ function addon:OnLogin()
         self.realmDb.chars[char] = self.charDb
     end
 
+    self.charDb.locale = GetLocale()
+
     self.charDb.level = level
     self.charDb.ilevel = select(2, GetAverageItemLevel())
     self.charDb.money = GetMoney()
@@ -601,7 +603,7 @@ function addon:GetProfColor(level, prof, profLevel, profMax)
         return PROF_LEVEL_COLORS[3]
     end
 
-    local profLevelPoor, profLevelGood = PROF_MAX_LEVEL + 1, 0
+    local poor, good = PROF_MAX_LEVEL + 1, 0
     local bracket
 
     local i
@@ -609,12 +611,12 @@ function addon:GetProfColor(level, prof, profLevel, profMax)
         if level >= PROF_LEVELS[prof][i][1] and (not bracket or bracket == PROF_LEVELS[prof][i][1]) then
             bracket = PROF_LEVELS[prof][i][1]
 
-            profLevelPoor = math.min(profLevelPoor, PROF_LEVELS[prof][i][3])
-            profLevelGood = math.max(profLevelGood, PROF_LEVELS[prof][i][4])
+            poor = math.min(poor, PROF_LEVELS[prof][i][3])
+            good = math.max(good, PROF_LEVELS[prof][i][4])
         end
     end
 
-    if profLevel >= profLevelGood then
+    if profLevel >= good then
         return PROF_LEVEL_COLORS[3]
     end
 
@@ -622,7 +624,7 @@ function addon:GetProfColor(level, prof, profLevel, profMax)
         return PROF_LEVEL_COLORS[1]
     end
 
-    if profLevel >= profLevelPoor then
+    if profLevel >= poor then
         return PROF_LEVEL_COLORS[2]
     end
 end
