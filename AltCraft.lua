@@ -4,7 +4,7 @@ LibStub('AceAddon-3.0'):NewAddon(addon, addonName, 'AceEvent-3.0', 'AceTimer-3.0
 
 local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
 
-local VERSION = 6
+local VERSION = 9
 
 local COLOR_TOOLTIP         = { 1.0, 1.0, 1.0 }
 local COLOR_TOOLTIP_2L      = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 }
@@ -481,22 +481,22 @@ end
 
 function addon:ScanRaids()
     local time = time()
+
     local raids = {}
 
     local raidIndex
     for raidIndex = 1, GetNumSavedInstances() do
-        local info = { instance = { GetSavedInstanceInfo(raidIndex) }, bosses = {} }
+        local name, timeout, difficulty, locked, extended, numBosses = unpackByIndex({ GetSavedInstanceInfo(raidIndex) }, 1, 3, 4, 5, 6, 11)
 
-        if info.instance[5] and not info.instance[6] then
-            info.instance[3] = time + info.instance[3]
+        local info = { name = name, timeout = time + timeout, difficulty = difficulty, locked = locked, extended = extended, bosses = {} }
 
-            local bossIndex
-            for bossIndex = 1, info.instance[11] do
-                table.insert(info.bosses, { GetSavedInstanceEncounterInfo(raidIndex, bossIndex) })
-            end
-
-            table.insert(raids, info)
+        local bossIndex
+        for bossIndex = 1, numBosses do
+            local boss, killed = unpackByIndex({ GetSavedInstanceEncounterInfo(raidIndex, bossIndex) }, 1, 3)
+            table.insert(info.bosses, { name = boss, killed = killed or nil })
         end
+
+        table.insert(raids, info)
     end
 
     self.charDb.raids = raids
