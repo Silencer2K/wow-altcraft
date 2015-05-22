@@ -8,6 +8,10 @@ local frame = AltCraftFrame
 
 function frame:AddTab(frame, label)
     table.insert(ALTCRAFT_TABS, { frame = frame, label = label })
+
+    if _G[self:GetName() .. 'Tab1'] then
+        self:UpdateTabs()
+    end
 end
 
 function frame:OnInitialize()
@@ -31,7 +35,6 @@ function frame:OnSelectTab(index)
 end
 
 function frame:OnShow()
-    self:UpdateTabs()
 end
 
 function frame:UpdateTabs()
