@@ -14,7 +14,7 @@ local COLOR_TOOLTIP_SOURCE  = 'ffffffff'
 local COLOR_TOOLTIP_COUNT   = 'ffffff00'
 
 local PROF_MAX_LEVEL        = 700
-local PROF_LEVEL_COLORS     = {{ 1.0, 0.0, 0.0 }, { 1.0, 1.0, 0.0 }, { 0.0, 1.0, 0.0 }}
+local PROF_LEVEL_COLORS     = {{ 1.0, 0.0, 0.0 }, { 1.0, 0.6, 0.0 }, { 0.0, 1.0, 0.0 }}
 
 local CHAR_MAX_LEVEL        = 100
 local CHAR_LEVEL_COLORS     = PROF_LEVEL_COLORS
