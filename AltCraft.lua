@@ -4,7 +4,7 @@ LibStub('AceAddon-3.0'):NewAddon(addon, addonName, 'AceEvent-3.0', 'AceTimer-3.0
 
 local L = LibStub('AceLocale-3.0'):GetLocale(addonName)
 
-local VERSION = 9
+local VERSION = 10
 
 local COLOR_TOOLTIP         = { 1.0, 1.0, 1.0 }
 local COLOR_TOOLTIP_2L      = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0 }
