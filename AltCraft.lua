@@ -500,6 +500,8 @@ function addon:ScanRaids()
     end
 
     self.charDb.raids = raids
+
+    self:UpdateFrames('raids')
 end
 
 function addon:GetCharDb(char, realm)
