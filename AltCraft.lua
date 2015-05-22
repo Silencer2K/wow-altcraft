@@ -375,9 +375,13 @@ function addon:ScanProfs()
     for profIndex = 1, 2 do
         self.charDb.profs[profIndex - 1] = nil
         if profs[profIndex] then
-            local skill, level, maxLevel = unpackByIndex({ GetProfessionInfo(profs[profIndex]) }, 7, 3, 4)
-            if PROF_SKILLLINE[skill] then
-                self.charDb.profs[profIndex - 1] = { name = PROF_SKILLLINE[skill], level = level, maxLevel = maxLevel }
+            local level, maxLevel, skillLine = unpackByIndex({ GetProfessionInfo(profs[profIndex]) }, 3, 4, 7)
+            if PROF_SKILLLINE[skillLine] then
+                self.charDb.profs[profIndex - 1] = {
+                    name     = PROF_SKILLLINE[skillLine],
+                    level    = level,
+                    maxLevel = maxLevel,
+                }
             end
         end
     end
@@ -482,9 +486,17 @@ function addon:ScanRaids()
 
     local raidIndex
     for raidIndex = 1, GetNumSavedInstances() do
-        local name, timeout, difficulty, locked, extended, numBosses = unpackByIndex({ GetSavedInstanceInfo(raidIndex) }, 1, 3, 4, 5, 6, 11)
+        local name, timeout, difficulty, locked, extended, numBosses =
+            unpackByIndex({ GetSavedInstanceInfo(raidIndex) }, 1, 3, 4, 5, 6, 11)
 
-        local info = { name = name, timeout = time + timeout, difficulty = difficulty, locked = locked, extended = extended, bosses = {} }
+        local info = {
+            name       = name,
+            timeout    = time + timeout,
+            difficulty = difficulty,
+            locked     = locked,
+            extended   = extended,
+            bosses     = {},
+        }
 
         local bossIndex
         for bossIndex = 1, numBosses do
