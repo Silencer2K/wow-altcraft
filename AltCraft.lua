@@ -196,17 +196,17 @@ function addon:UpdateFrames(what)
 end
 
 function addon:OnLogin()
-    self.realm = GetRealmName()
-    self.faction = string.upper(UnitFactionGroup('player'))
-    self.char = UnitName('player')
+    local realm = GetRealmName()
+    local faction = string.upper(UnitFactionGroup('player'))
+    local char = UnitName('player')
 
-    self.realmDb = self.db.global.realms[self.realm]
+    self.realmDb = self.db.global.realms[realm]
     if not self.realmDb then
         self.realmDb = {
             chars = {},
         }
 
-        self.db.global.realms[self.realm] = self.realmDb
+        self.db.global.realms[realm] = self.realmDb
     end
 
     local class = select(2, UnitClass('player'))
@@ -218,10 +218,10 @@ function addon:OnLogin()
     local gender = UnitSex('player') == 2 and 'MALE' or 'FEMALE'
     local level  = UnitLevel('player')
 
-    self.charDb = self.realmDb.chars[self.char]
+    self.charDb = self.realmDb.chars[char]
     if not self.charDb or class ~= self.charDb.class or level < self.charDb.level then
         self.charDb = {
-            faction = self.faction,
+            faction = faction,
             class   = class,
             race    = race,
             gender  = gender,
@@ -237,7 +237,7 @@ function addon:OnLogin()
             profs = {},
         }
 
-        self.realmDb.chars[self.char] = self.charDb
+        self.realmDb.chars[char] = self.charDb
     end
 
     self.charDb.level = level
@@ -474,7 +474,7 @@ end
 function addon:GetCharDb(char, realm)
     char = char:lower()
 
-    realm = realm or self.realm
+    realm = realm or GetRealmName()
     realm = realm:gsub('[- ]', ''):lower()
 
     local tryRealm, realmDb
@@ -495,7 +495,7 @@ function addon:GetRealms()
     local list = {}
 
     for realm in pairs(self.db.global.realms) do
-        if not tableIsEmpty(self.db.global.realms[realm]) then
+        if not tableIsEmpty(self.db.global.realms[realm].chars) then
             table.insert(list, realm)
         end
     end
@@ -506,8 +506,8 @@ function addon:GetRealms()
 end
 
 function addon:GetChars(realm, faction)
-    realm = realm or self.realm
-    faction = faction or self.faction
+    realm = realm or GetRealmName()
+    faction = faction or string.upper(UnitFactionGroup('player'))
 
     local list = {}
 
@@ -524,7 +524,7 @@ function addon:GetChars(realm, faction)
 end
 
 function addon:CanDeleteChar(char, realm)
-    return char and realm and not (char == self.char and realm == self.realm)
+    return char and realm and not (char == (UnitName('player'))[1] and realm == GetRealmName())
 end
 
 function addon:DeleteChar(char, realm)
@@ -538,7 +538,7 @@ function addon:ColorRGBToText(r, g, b)
 end
 
 function addon:GetFactionColor(faction)
-    faction = faction or self.faction
+    faction = faction or string.upper(UnitFactionGroup('player'))
 
     local ids = { HORDE = 0, ALLIANCE = 1 }
     local color = PLAYER_FACTION_COLORS[ids[faction]]
