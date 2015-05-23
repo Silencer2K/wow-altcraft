@@ -111,7 +111,11 @@ function frame:OnDeleteClick()
     end
 end
 
-function frame:Update()
+function frame:Update(what)
+    if what and not (what == 'level' or what == 'ilevel' or what == 'money' or what == 'profs') then
+        return
+    end
+
     self:UpdateSelectRealm()
     self:UpdateSelectFaction()
     self:UpdateSort()

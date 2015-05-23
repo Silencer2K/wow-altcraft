@@ -194,10 +194,8 @@ function addon:OnInitialize()
 end
 
 function addon:UpdateFrames(what)
-    if AltCraftFrame:IsShown() and AltCraftFrameCharsTabFrame:IsShown() then
-        if what == 'level' or what == 'ilevel' or what == 'money' or what == 'profs' then
-            AltCraftFrameCharsTabFrame:Update()
-        end
+    if AltCraftFrame:IsShown() then
+        AltCraftFrame:Update(what)
     end
 end
 

@@ -24,5 +24,8 @@ function frame:OnShow()
     self:Update()
 end
 
-function frame:Update()
+function frame:Update(what)
+    if what then
+        return
+    end
 end

@@ -46,6 +46,10 @@ end
 function frame:OnShow()
 end
 
+function frame:Update(what)
+    ALTCRAFT_TABS[PanelTemplates_GetSelectedTab(self)].frame:Update(what)
+end
+
 function frame:UpdateTabs()
     local i
     for i = 1, #ALTCRAFT_TABS do
