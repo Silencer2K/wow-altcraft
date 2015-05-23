@@ -19,7 +19,7 @@ function frame:OnShow()
 
     parent.BottomLeft:SetTexture('Interface\\Addons\\AltCraft\\assets\\frame\\bl2')
 
-    parent.Portrait:SetTexture('Interface\\MailFrame\\Mail-Icon')
+    parent.Portrait:SetTexture('Interface\\ICONS\\INV_Gizmo_KhoriumPowerCore')
 
     self:Update()
 end
