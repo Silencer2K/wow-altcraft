@@ -407,7 +407,7 @@ function addon:ScanOutbox(rcpt, subject, body)
     for itemIndex = 1, ATTACHMENTS_MAX_SEND do
         local link = GetSendMailItemLink(itemIndex)
         if link then
-            local itemId = 0 + link:match('|Hitem:(%d+):')
+            local itemId = 0 + (link:match('|Hitem:(%d+):') or 0)
             local count = select(3, GetSendMailItem(itemIndex))
 
             if not items[itemId] then
@@ -464,7 +464,7 @@ function addon:ScanInbox(deffered)
         for itemIndex = 1, ATTACHMENTS_MAX_RECEIVE do
             local link = GetInboxItemLink(mailIndex, itemIndex)
             if link then
-                local itemId = 0 + link:match('|Hitem:(%d+):')
+                local itemId = 0 + (link:match('|Hitem:(%d+):') or 0)
                 local count = select(3, GetInboxItem(mailIndex, itemIndex))
 
                 if not items[itemId] then
@@ -639,7 +639,7 @@ function addon:OnGameTooltipSetItem(tooltip)
         local link = select(2, tooltip:GetItem())
 
         if link then
-            local itemId = 0 + link:match('|Hitem:(%d+):')
+            local itemId = 0 + (link:match('|Hitem:(%d+):') or 0)
             local total = 0
 
             tooltip:AddLine(' ')
