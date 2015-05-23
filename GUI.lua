@@ -17,6 +17,8 @@ function frame:AddTab(tabFrame, label)
     if _G[self:GetName() .. 'Tab1'] then
         self:UpdateTabs()
     end
+
+    return #ALTCRAFT_TABS
 end
 
 function frame:OnInitialize()
