@@ -22,6 +22,8 @@ end
 function frame:OnInitialize()
     table.insert(UISpecialFrames, self:GetName())
 
+    self.Portrait:SetMask("Interface\\CharacterFrame\\TempPortraitAlphaMask")
+
     self:UpdateTabs()
     self:OnSelectTab(1)
 end

@@ -84,7 +84,7 @@
                 <Texture name="$parentPortraitTexture" parentKey="Portrait">
                     <Size x="58" y="58" />
                     <Anchors>
-                        <Anchor point="TOPLEFT" x="8" y="-7" />
+                        <Anchor point="TOPLEFT" x="8" y="-6" />
                     </Anchors>
                 </Texture>
             </Layer>
