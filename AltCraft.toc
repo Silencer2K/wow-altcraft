@@ -31,3 +31,4 @@ GUIRegsFrame.xml
 GUIRegsFrame.lua
 
 Config.lua
+
