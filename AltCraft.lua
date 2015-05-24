@@ -640,8 +640,6 @@ function addon:OnGameTooltipSetItem(tooltip)
             local itemId = 0 + (link:match('|Hitem:(%d+):') or 0)
             local total = 0
 
-            tooltip:AddLine(' ')
-
             local char, charDb
             for char, charDb in pairs(self:GetChars()) do
                 local count, desc = 0
@@ -662,6 +660,10 @@ function addon:OnGameTooltipSetItem(tooltip)
                 end
 
                 if count > 0 then
+                    if total == 0 then
+                        tooltip:AddLine(' ')
+                    end
+
                     tooltip:AddDoubleLine(string.format(
                         '|c%s%s|r',
                         RAID_CLASS_COLORS[charDb.class].colorStr,
@@ -677,12 +679,14 @@ function addon:OnGameTooltipSetItem(tooltip)
                 total = total + count
             end
 
-            tooltip:AddLine(string.format(
-                '%s: |c%s%d|r',
-                L.tooltip_total,
-                COLOR_TOOLTIP_COUNT,
-                total
-            ), unpack(COLOR_TOOLTIP))
+            if total > 0 then
+                tooltip:AddLine(string.format(
+                    '%s: |c%s%d|r',
+                    L.tooltip_total,
+                    COLOR_TOOLTIP_COUNT,
+                    total
+                ), unpack(COLOR_TOOLTIP))
+            end
         end
     end
 end
