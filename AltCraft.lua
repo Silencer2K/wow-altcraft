@@ -123,9 +123,9 @@ function addon:OnInitialize()
     end)
 
     self:RegisterEvent('BANKFRAME_CLOSED', function(...)
-        if self.scanBankTimer then
-            self:ScanBank()
-        end
+        --if self.scanBankTimer then
+        --    self:ScanBank()
+        --end
     end)
 
     self:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', function(...)
@@ -140,7 +140,8 @@ function addon:OnInitialize()
             if bagIndex >= BACKPACK_CONTAINER and bagIndex <= NUM_BAG_SLOTS then
                 self:ScanBags(true)
             elseif bagIndex >= NUM_BAG_SLOTS + 1 and bagIndex <= NUM_BAG_SLOTS + NUM_BANKBAGSLOTS then
-                self:ScanBank(true)
+                --self:ScanBank(true)
+                self:ScanBank()
             end
         end
     end)
@@ -150,7 +151,8 @@ function addon:OnInitialize()
     end)
 
     self:RegisterEvent('PLAYERBANKSLOTS_CHANGED', function(...)
-        self:ScanBank(true)
+        --self:ScanBank(true)
+        self:ScanBank()
     end)
 
     self:RegisterEvent('SKILL_LINES_CHANGED', function(...)
