@@ -146,12 +146,12 @@ function frame:UpdateSelectRealm()
         local selectedRealm = GetRealmName()
 
         local realm
-        for realm in valuesIterator(addon:GetRealms()) do
+        for realm in table.values(addon:GetRealms()) do
             info.value = realm
             info.text = string.format(
                 '%s (%d)',
                 realm,
-                tableLength(addon:GetChars(realm, 'ALLIANCE')) + tableLength(addon:GetChars(realm, 'HORDE'))
+                table.len(addon:GetChars(realm, 'ALLIANCE')) + table.len(addon:GetChars(realm, 'HORDE'))
             )
 
             UIDropDownMenu_AddButton(info)
@@ -183,13 +183,13 @@ function frame:UpdateSelectFaction()
         local selectedFaction = string.upper(UnitFactionGroup('player'))
 
         local faction
-        for faction in valuesIterator({ 'ALLIANCE', 'HORDE' }) do
+        for faction in table.values({ 'ALLIANCE', 'HORDE' }) do
             info.value = faction
             info.text = string.format(
                 '|c%s%s (%d)|r',
                 addon:GetFactionColor(faction),
                 _G['FACTION_' .. faction],
-                tableLength(addon:GetChars(self.selectedRealm, faction))
+                table.len(addon:GetChars(self.selectedRealm, faction))
             )
 
             UIDropDownMenu_AddButton(info)
@@ -266,7 +266,7 @@ end
 
 function frame:UpdateSort()
     local column
-    for column in valuesIterator({ 'Name', 'Level', 'ILevel', 'Money', 'Prof1', 'Prof1Level', 'Prof2', 'Prof2Level' }) do
+    for column in table.values({ 'Name', 'Level', 'ILevel', 'Money', 'Prof1', 'Prof1Level', 'Prof2', 'Prof2Level' }) do
         local button = self[column .. 'Sort']
 
         if self.sortColumn == column:lower() then
