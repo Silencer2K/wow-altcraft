@@ -377,7 +377,7 @@ function addon:ScanProfs()
     for profIndex = 1, 2 do
         self.charDb.profs[profIndex - 1] = nil
         if profs[profIndex] then
-            local level, maxLevel, skillLine = table.select({ GetProfessionInfo(profs[profIndex]) }, 3, 4, 7)
+            local level, maxLevel, skillLine = table.s2k_select({ GetProfessionInfo(profs[profIndex]) }, 3, 4, 7)
             if PROF_SKILLLINE[skillLine] then
                 self.charDb.profs[profIndex - 1] = {
                     name     = PROF_SKILLLINE[skillLine],
@@ -489,7 +489,7 @@ function addon:ScanRaids()
     local raidIndex
     for raidIndex = 1, GetNumSavedInstances() do
         local name, timeout, difficulty, locked, extended, numBosses =
-            table.select({ GetSavedInstanceInfo(raidIndex) }, 1, 3, 4, 5, 6, 11)
+            table.s2k_select({ GetSavedInstanceInfo(raidIndex) }, 1, 3, 4, 5, 6, 11)
 
         local info = {
             name       = name,
@@ -502,7 +502,7 @@ function addon:ScanRaids()
 
         local bossIndex
         for bossIndex = 1, numBosses do
-            local boss, killed = table.select({ GetSavedInstanceEncounterInfo(raidIndex, bossIndex) }, 1, 3)
+            local boss, killed = table.s2k_select({ GetSavedInstanceEncounterInfo(raidIndex, bossIndex) }, 1, 3)
             table.insert(info.bosses, { name = boss, killed = killed or nil })
         end
 
@@ -538,7 +538,7 @@ function addon:GetRealms()
     local list = {}
 
     for realm in pairs(self.db.global.realms) do
-        if not table.is_empty(self.db.global.realms[realm].chars) then
+        if not table.s2k_is_empty(self.db.global.realms[realm].chars) then
             table.insert(list, realm)
         end
     end
@@ -647,7 +647,7 @@ function addon:OnGameTooltipSetItem(tooltip)
                 local count, desc = 0
 
                 local source
-                for source in table.values({ 'equip', 'bags', 'reagents', 'bank', 'mail' }) do
+                for source in table.s2k_values({ 'equip', 'bags', 'reagents', 'bank', 'mail' }) do
                     local sourceDb = charDb.items[source]
                     if sourceDb[itemId] then
                         count = count + sourceDb[itemId].count
